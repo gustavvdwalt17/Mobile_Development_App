@@ -2,6 +2,7 @@ import { View, Text,Image,TextInput,StyleSheet,TouchableOpacity } from 'react-na
 import React from 'react'
 import { telemedicine } from '../assets'
 const LoginRegister = () => {
+
   return (
     <View style={{display:'flex',alignItems:'center', backgroundColor:'#EDEEFFFF',height:'100%'}}>
     <Image source={telemedicine} style={{marginTop:10,resizeMode:'contain',width:350,height:300,borderRadius:10}} />
@@ -24,6 +25,16 @@ const LoginRegister = () => {
   <View style={{backgroundColor:'#26389E',width:200,borderRadius:10,margin:10}} >
    <TouchableOpacity><Text style={{color:'white',textAlign:'center',padding:10}} >Login</Text></TouchableOpacity>
   </View>
+
+<View style={{display:'flex',flexDirection:'row'}} >
+  <Text  style={{color:'#a6a6a6' }} >Don't have an Account?</Text>
+
+  <TouchableOpacity>
+  <Text style={{marginLeft:5,color:'blue'}} >Create an Account</Text>
+  </TouchableOpacity>
+
+</View>
+
     </View>
   )
 }
