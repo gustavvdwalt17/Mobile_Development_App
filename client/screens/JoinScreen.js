@@ -3,6 +3,7 @@ import React from 'react'
 import { login } from '../assets'
 import { doctor } from '../assets'
 const JoinScreen = ({navigation}) => {
+  let login
   return (
     <View style={{backgroundColor:'#EDEEFFFF',height:'100%'}} >
     <View style={styles.container} >
@@ -21,7 +22,7 @@ const JoinScreen = ({navigation}) => {
 
      <View style={{marginTop:50,display:'flex',flexDirection:'row'}} >
 
-<TouchableOpacity onPress={()=>navigation.navigate('Login')}
+<TouchableOpacity onPress={()=>navigation.navigate('Login',{login:true})}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 > 
   <Text style={{color:'white'}} > Login</Text>
