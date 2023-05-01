@@ -5,9 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingItem from './components/OnboardingItem';
 import { Continue } from './components/OnboardingItem';
-import Login from './components/Login';
+// import Login from './components/Login';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import JoinScreen from './screens/JoinScreen';
+import LoginRegister from './screens/LoginRegister';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
@@ -37,8 +39,8 @@ console.log(istrue)
 
       {istrue ? (
                 <Stack.Screen 
-      name="Login"
-      component={Login}
+      name="Join"
+      component={JoinScreen}
       
       />
        
@@ -59,8 +61,14 @@ console.log(istrue)
       component={Continue}
       />
                     <Stack.Screen 
+      name="Join"
+      component={JoinScreen}
+      
+      />
+      
+                    <Stack.Screen 
       name="Login"
-      component={Login}
+      component={LoginRegister}
       
       />
       

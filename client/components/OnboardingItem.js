@@ -1,7 +1,7 @@
 import { View, Text, useWindowDimensions,StyleSheet,Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Login from './Login'
+// import JoinScreen from '../../screens/JoinScreen'
 const OnboardingItem = ({item,navigation}) => {
   const  {width} = useWindowDimensions()
 
@@ -30,7 +30,7 @@ export const Continue =  ({navigation}) =>{
 
 
       
-      navigation.navigate('Login')
+      navigation.navigate('Join')
   }
   return (
     <View style={styles.continue} >
