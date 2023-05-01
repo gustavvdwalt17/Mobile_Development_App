@@ -2,7 +2,7 @@ import { View, Text, StyleSheet,Image,Button,TextInput,TouchableOpacity } from '
 import React from 'react'
 import { login } from '../assets'
 import { doctor } from '../assets'
-const Login = () => {
+const JoinScreen = ({navigation}) => {
   return (
     <View style={{backgroundColor:'#EDEEFFFF',height:'100%'}} >
     <View style={styles.container} >
@@ -21,10 +21,10 @@ const Login = () => {
 
      <View style={{marginTop:50,display:'flex',flexDirection:'row'}} >
 
-<TouchableOpacity
+<TouchableOpacity onPress={()=>navigation.navigate('Login')}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 > 
-  <Text style={{color:'white'}}> Login </Text>
+  <Text style={{color:'white'}} > Login</Text>
   </TouchableOpacity>
 <TouchableOpacity
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
@@ -37,7 +37,7 @@ style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}
   )
 }
 
-export default Login
+export default JoinScreen
 
 
 const styles = StyleSheet.create({
