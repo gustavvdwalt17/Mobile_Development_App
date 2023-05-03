@@ -9,15 +9,22 @@ import { Continue } from './components/OnboardingItem';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinScreen from './screens/JoinScreen';
+import { store } from './store';
+import { Provider } from 'react-redux';
 import LoginRegister from './screens/LoginRegister';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
+
   const [loading,setLoading] = useState(false)
+
   const checOnboard =  async () => {
+  
  let val= await AsyncStorage.getItem('@onboarding') 
 if (val){
-  AsyncStorage.clear()
+
+    setIsTrue(true)
+  // AsyncStorage.clear()
   // setIsTrue(true)
 }
   }
@@ -25,28 +32,27 @@ if (val){
 //  console.log('val',val)
 
 useEffect(()=>{
+  // setLoading(true)
  checOnboard()
 },[])
 console.log(istrue)
   return (
+
     <NavigationContainer>
+
+      <Provider store={store} >
       <Stack.Navigator
       screenOptions={{
         headerShown:false
       }}
       > 
-    {/* <View style={styles.container}> */}
 
-      {istrue ? (
-                <Stack.Screen 
-      name="Join"
-      component={JoinScreen}
-      
-      />
-       
-      ) : (
+
+      {!istrue ? (
         <>
-              <Stack.Screen 
+
+     
+             <Stack.Screen 
       name="Onboarding"
       component={Onboarding}
       
@@ -60,6 +66,23 @@ console.log(istrue)
       name="Continue"
       component={Continue}
       />
+         
+                    <Stack.Screen 
+      name="Join"
+      component={JoinScreen}
+      
+      />
+      
+                    <Stack.Screen 
+      name="Login"
+      component={LoginRegister}/>
+    
+      </>
+       
+      ) : (
+        <>
+        
+         
                     <Stack.Screen 
       name="Join"
       component={JoinScreen}
@@ -77,8 +100,9 @@ console.log(istrue)
  
 
     
-    {/* </View> */}
+ 
     </Stack.Navigator>
+    </Provider>
     </NavigationContainer>
   );
 }

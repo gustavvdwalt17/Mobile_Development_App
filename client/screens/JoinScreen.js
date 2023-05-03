@@ -2,8 +2,22 @@ import { View, Text, StyleSheet,Image,Button,TextInput,TouchableOpacity } from '
 import React from 'react'
 import { login } from '../assets'
 import { doctor } from '../assets'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeLoginState, changeRegiserState } from '../slices/loginState'
 const JoinScreen = ({navigation}) => {
-  let login
+  // const {login} = useSelector((state) => state.loginSt)
+  // const login = useSelector((state) => state.loginSt.login)
+  const dispatch = useDispatch()
+  const handlePress = () => {
+    console.log('press is handled')
+    dispatch(changeLoginState())
+    navigation.navigate('Login')
+  }
+  const handlePressReg = () => {
+
+    dispatch(changeRegiserState())
+    navigation.navigate('Login')
+  }
   return (
     <View style={{backgroundColor:'#EDEEFFFF',height:'100%'}} >
     <View style={styles.container} >
@@ -22,15 +36,15 @@ const JoinScreen = ({navigation}) => {
 
      <View style={{marginTop:50,display:'flex',flexDirection:'row'}} >
 
-<TouchableOpacity onPress={()=>navigation.navigate('Login',{login:true})}
+<TouchableOpacity onPress={handlePress}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 > 
   <Text style={{color:'white'}} > Login</Text>
   </TouchableOpacity>
-<TouchableOpacity
+<TouchableOpacity   onPress={handlePressReg}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 >
-   <Text style={{color:'white'}} >Register</Text>
+   <Text  style={{color:'white'}} >Register</Text>
    </TouchableOpacity>
 
      </View>
