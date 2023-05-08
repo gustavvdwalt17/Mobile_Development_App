@@ -12,6 +12,10 @@ import JoinScreen from './screens/JoinScreen';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import LoginRegister from './screens/LoginRegister';
+import RegsterSc2 from './screens/RegisterScreens/RegsterSc2';
+import Register from './screens/RegisterScreens/Register';
+import RegisterSc3 from './screens/RegisterScreens/RegisterSc3';
+import RegisterSc4 from './screens/RegisterScreens/RegisterSc4';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
@@ -31,10 +35,10 @@ if (val){
 //  let val= await AsyncStorage.getItem('onboarding') 
 //  console.log('val',val)
 
-useEffect(()=>{
-  // setLoading(true)
- checOnboard()
-},[])
+// useEffect(()=>{
+//   // setLoading(true)
+//  checOnboard()
+// },[])
 console.log(istrue)
   return (
 
@@ -48,7 +52,7 @@ console.log(istrue)
       > 
 
 
-      {!istrue ? (
+      {/* {!istrue ? (
         <>
 
      
@@ -79,7 +83,7 @@ console.log(istrue)
     
       </>
        
-      ) : (
+      ) : ( */}
         <>
         
          
@@ -89,14 +93,38 @@ console.log(istrue)
       
       />
       
+
+
+
                     <Stack.Screen 
       name="Login"
       component={LoginRegister}
       
       />
+                          <Stack.Screen 
+      name="Register"
+      component={Register}
+      
+      />
+                          <Stack.Screen 
+      name="RegisterSc2"
+      component={RegsterSc2}
+      
+      />
+                          <Stack.Screen 
+      name="RegisterSc3"
+      component={RegisterSc3}
+      
+      />
+                          <Stack.Screen 
+      name="RegisterSc4"
+      component={RegisterSc4}
+      
+      />
+
       
 </>
-      )}
+      {/* )} */}
  
 
     
