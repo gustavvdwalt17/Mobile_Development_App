@@ -10,13 +10,13 @@ const JoinScreen = ({navigation}) => {
   const dispatch = useDispatch()
   const handlePress = () => {
     console.log('press is handled')
-    dispatch(changeLoginState())
+    // dispatch(changeLoginState())
     navigation.navigate('Login')
   }
   const handlePressReg = () => {
 
-    dispatch(changeRegiserState())
-    navigation.navigate('Login')
+    // dispatch(changeRegiserState())
+    navigation.navigate('Register')
   }
   return (
     <View style={{backgroundColor:'#EDEEFFFF',height:'100%'}} >
