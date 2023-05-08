@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet,TextInput,TouchableOpacity } from 'react-native'
 import React from 'react'
-
+import CalendarPicker from 'react-native-calendar-picker';
 const RegisterSc3 = ({navigation}) => {
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
@@ -30,7 +30,12 @@ const RegisterSc3 = ({navigation}) => {
     <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
    
         <Text style={{color:'silver',margin:10,marginTop:2}} > DOB</Text>
-    <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
+        <TouchableOpacity style={{margin:10}}><Text>Choose Date</Text></TouchableOpacity>
+{/* 
+ <CalendarPicker
+  />
+        */}
+
    
    
     </View>
