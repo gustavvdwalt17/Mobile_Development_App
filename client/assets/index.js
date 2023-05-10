@@ -1,3 +1,6 @@
 export {default as login  } from './log-in.png'
 export {default as doctor} from './doctor.png'
 export {default as telemedicine} from './telemedicine.png'
+export {default as home} from './home.png'
+export {default as pfp} from './man.png'
+export {default as rarrow} from './right-arrow.png'
