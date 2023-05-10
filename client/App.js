@@ -11,17 +11,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import JoinScreen from './screens/JoinScreen';
 import { store } from './store';
 import { Provider } from 'react-redux';
+import Appointment from './screens/Appointment';
+import UserScreen from './screens/UserScreen';
 import LoginRegister from './screens/LoginRegister';
 import RegsterSc2 from './screens/RegisterScreens/RegsterSc2';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Register from './screens/RegisterScreens/Register';
 import RegisterSc3 from './screens/RegisterScreens/RegisterSc3';
 import RegisterSc4 from './screens/RegisterScreens/RegisterSc4';
+import Book from './screens/Book';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
 
   const [loading,setLoading] = useState(false)
-
+const Tab = createBottomTabNavigator()
   const checOnboard =  async () => {
   
  let val= await AsyncStorage.getItem('@onboarding') 
@@ -85,7 +89,26 @@ console.log(istrue)
        
       ) : ( */}
         <>
-        
+                          {/* <Stack.Screen 
+      name="appointment"
+      component={Appointment}
+      
+      /> */}
+
+
+
+                            <Stack.Screen 
+      name="User"
+      component={UserScreen}
+      
+      />
+                            <Stack.Screen 
+      name="Book"
+      component={Book}
+      
+      />
+
+
          
                     <Stack.Screen 
       name="Join"
@@ -121,6 +144,7 @@ console.log(istrue)
       component={RegisterSc4}
       
       />
+
 
       
 </>
