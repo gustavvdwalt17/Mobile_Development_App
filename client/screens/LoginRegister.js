@@ -6,7 +6,7 @@ import loginState, { changeLoginState, changeRegiserState, registerState } from 
 const LoginRegister = ({navigation}) => {
 //c
 const [active,setActive]=useState('user')
-  const {login} = useSelector((state) => state.loginSt)
+  // const {login} = useSelector((state) => state.loginSt)
 const dispatch = useDispatch()
   return (
     <View style={{display:'flex',alignItems:'center', backgroundColor:'#D8EAEF',height:'100%'}}>
@@ -14,9 +14,10 @@ const dispatch = useDispatch()
   
 
 
-<Text style={{fontWeight:800,fontSize:30,margin:10}} >{login ? <Text>Login</Text> :  <Text>Register</Text>   }</Text>
+{/* <Text style={{fontWeight:800,fontSize:30,margin:10}} >{login ? <Text>Login</Text> :  <Text>Register</Text>   }</Text> */}
+<Text style={{fontWeight:800,fontSize:30,margin:10}} >Login</Text>
 
-{!login &&(
+{/* {!login &&(
 <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',marginBottom:20}} >
 
   <View style={[active === 'user' ? styles.blue : styles.gray]} >
@@ -36,8 +37,8 @@ const dispatch = useDispatch()
   
 
   </View>
-)}
-{login && (
+)} */}
+{/* {login && ( */}
 
 
  <View  >
@@ -66,20 +67,28 @@ const dispatch = useDispatch()
 </View>
 <View style={{alignItems:'center'}} >
   <View style={{backgroundColor:'#26389E',width:200,borderRadius:20,margin:10}} >
-   <TouchableOpacity>{login  ? <Text style={{color:'white',textAlign:'center',padding:10}}>Login</Text>  : <Text style={{color:'white',textAlign:'center',padding:10}}>Register</Text> }</TouchableOpacity>
+  <TouchableOpacity> 
+    <Text style={{color:'white',textAlign:'center',padding:10}}>
+  Log in
+  </Text> 
+  </TouchableOpacity>
+  
+   {/* <TouchableOpacity>{login  ? <Text style={{color:'white',textAlign:'center',padding:10}} onPress={()=>navigation.navigate('User')}>Login</Text>  : <Text style={{color:'white',textAlign:'center',padding:10}}>Register</Text> }</TouchableOpacity> */}
   </View>
 </View>
 <View style={{display:'flex',flexDirection:'row',justifyContent:'center'}} >
-  <Text  style={{color:'#a6a6a6' }} >{login ? <Text>Don't have an Account?</Text> : <Text>Already have an Account?</Text>   }</Text>
+  {/* <Text  style={{color:'#a6a6a6' }} >{login ? <Text>Don't have an Account?</Text> : <Text>Already have an Account?</Text>   }</Text> */}
 
-  <TouchableOpacity  >
-  {login ?   <Text style={{marginLeft:5,color:'blue'}} onPress={()=>navigation.navigate('Register')} >Create an Account</Text> :  <Text onPress={()=>dispatch(changeLoginState())}  style={{marginLeft:5,color:'blue'}}>Login into Account</Text>  }
+  <TouchableOpacity onPress={()=>navigation.navigate('Register')}  >
+    <Text style={{marginLeft:5}}>Don't have an Account? Register</Text>
+  {/* {login ?   <Text style={{marginLeft:5,color:'blue'}} onPress={()=>navigation.navigate('Register')} >Create an Account</Text> :  <Text onPress={()=>dispatch(changeLoginState())}  style={{marginLeft:5,color:'blue'}}>Login into Account</Text>  } */}
+  {/* {login ?   <Text style={{marginLeft:5,color:'blue'}} onPress={()=>navigation.navigate('Register')} >Create an Account</Text> :  <Text onPress={()=>dispatch(changeLoginState())}  style={{marginLeft:5,color:'blue'}}>Login into Account</Text>  } */}
 
   </TouchableOpacity>
 
 </View>
  </View>
- )}
+ {/* )} */}
     </View>
   )
 }

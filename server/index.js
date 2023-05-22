@@ -1,6 +1,8 @@
 import  express  from "express";
 import cors from 'cors'
 import bodyParser from 'body-parser'
+
+import mysql from 'mysql';
 const app = express();
 app.use(cors())
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
@@ -31,5 +33,32 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 // })
 // })
 
+
+
+const connection = mysql.createConnection({
+  host: 'mobile-application-database.cglewgbpldmx.eu-north-1.rds.amazonaws.com',
+  user: 'admin',
+  password: 'eetmyasb:)',
+  database: 'mobiledevelopmentdb'
+});
+
+connection.connect((error) => {
+  if (error) {
+    console.error('Error connecting to Amazon RDS:', error);
+  } else {
+    console.log('Connected to Amazon RDS database.');
+  }
+});
+
+// const query = 'INSERT INTO users(column1, column2, column3) VALUES (?, ?, ?)';
+// const values = ['value1', 'value2', 'value3'];
+const query = 'SELECT * FROM users';
+connection.query(query, (error, results, fields) => {
+  if (error) {
+    console.error('Error executing query:', error);
+  } else {
+    console.log('Query results:', results);
+  }
+});
 
 app.listen(3001,()=>console.log(`Listening on port ${3001}`))
