@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet,TextInput,TouchableOpacity} from 'react-native'
 import React from 'react'
-
+import { useSelector } from 'react-redux'
 const RegsterSc2 = ({navigation}) => {
+        const {isUser} = useSelector((state)=> state.loginSt)
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
     {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:50}} >
@@ -12,7 +13,7 @@ const RegsterSc2 = ({navigation}) => {
 
 
     <View style={{margin:20,marginTop:40}} >
-        <Text style={{fontSize:18}} >Step 2 OF 4</Text>
+        <Text style={{fontSize:18}} > {isUser ? <Text>Step 2 OF 3</Text>: <Text>Step 2 OF 4</Text>}  </Text>
     </View>
 
     <View style={{margin:20}} >

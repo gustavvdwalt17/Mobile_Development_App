@@ -1,7 +1,19 @@
 import { View, Text, StyleSheet,TextInput,TouchableOpacity } from 'react-native'
 import React from 'react'
 import CalendarPicker from 'react-native-calendar-picker';
+import { useSelector } from 'react-redux';
 const RegisterSc3 = ({navigation}) => {
+    const {isUser} = useSelector((state)=> state.loginSt)
+     console.log('isUSer',isUser)
+
+     const handlePress =() => {
+        if (isUser) {
+              navigation.navigate('User') 
+        }else{
+        navigation.navigate('RegisterSc4')
+        }
+
+     }
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
     {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:50}} >
@@ -12,7 +24,7 @@ const RegisterSc3 = ({navigation}) => {
 
 
     <View style={{margin:20,marginTop:40}} >
-        <Text style={{fontSize:18}} >Step 3 OF 4</Text>
+        <Text style={{fontSize:18}} >{isUser ? <Text>Step 3 of 3</Text> : <Text>Step 3 of 4</Text>}</Text>
     </View>
 
     <View style={{margin:20}} >
@@ -42,7 +54,7 @@ const RegisterSc3 = ({navigation}) => {
 
 <View style={{display:'flex',alignItems:'center',marginTop:50}} >
     <TouchableOpacity style={{backgroundColor:'#375169',width:150,height:50,borderRadius:20}} > 
-        <Text style={{marginTop:15,color:'white',textAlign:'center'}} onPress={()=>navigation.navigate('RegisterSc4')} >Next</Text>
+        <Text style={{marginTop:15,color:'white',textAlign:'center'}} onPress={()=>handlePress()} >{isUser ? <Text>Register</Text>: <Text>Next</Text>}</Text>
     </TouchableOpacity>
 </View>
 

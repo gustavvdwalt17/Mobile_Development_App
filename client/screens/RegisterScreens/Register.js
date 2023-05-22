@@ -1,10 +1,25 @@
 import { View, Text ,StyleSheet,TextInput, TouchableOpacity} from 'react-native'
 import React from 'react'
 import { useState } from 'react'
-
+import { useDispatch } from 'react-redux'
+import { healthPracorUser } from '../../slices/loginState'
+import { useEffect } from 'react'
 const Register = ({navigation}) => {
+    const dispatch = useDispatch()
     //c
 const [active,setActive]=useState('user')
+const [isUser,setIsUser]=useState('true')
+
+useEffect(()=>{
+   
+       dispatch(healthPracorUser(isUser))
+},[active])
+
+
+const handlePress = () => {
+    dispatch(healthPracorUser(active))
+    navigation.navigate('RegisterSc2')
+}
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
     <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:50}} >
@@ -15,7 +30,7 @@ const [active,setActive]=useState('user')
 
 
     <View style={{margin:20,marginTop:25}} >
-        <Text style={{fontSize:18}} >Step 1 OF 4</Text>
+        <Text style={{fontSize:18}} >{active==='user' ? <Text>Step 1 of 3</Text> : <Text>Step 1 of 4</Text>}</Text>
     </View>
 
     <View style={{margin:20}} >
@@ -33,7 +48,7 @@ const [active,setActive]=useState('user')
 
 <View style={{display:'flex',alignItems:'center',marginTop:50}} >
     <TouchableOpacity style={{backgroundColor:'#375169',width:150,height:50,borderRadius:20}} > 
-        <Text style={{marginTop:15,color:'white',textAlign:'center'}} onPress={()=>navigation.navigate('RegisterSc2')} >Next</Text>
+        <Text style={{marginTop:15,color:'white',textAlign:'center'}} onPress={()=>handlePress()} >Next</Text>
     </TouchableOpacity>
 </View>
 
