@@ -1,16 +1,51 @@
-import { View, Text, TouchableOpacity,Image, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity,Image, ScrollView,StyleSheet } from 'react-native'
 import React from 'react'
+import axios from 'axios'
 import CalendarPicker from 'react-native-calendar-picker'
 import { useState,useEffect } from 'react'
 import { pfp } from '../assets'
 const Appointment = () => {
-  const [disbleDate,setDisableDate] = useState([])
+
+  const [timesyeh,setTimesyeh]=useState(null)
+  const [userSchedule,setUserSchedule]=useState(null)
+  const [clickedFormatted,setClickedFormatted]=useState(null)
+  const [finalTime,setFinalTime]=useState(null)
+  useEffect(()=>{
+  const handlePress = async () =>{
+ try {
+  //also fetch appoinemtns and then delete old appointments
+    const id = '1'
+    const response = await axios.get('http://10.0.0.12:3001/fetch');
+    // Handle the response from the server
+    setTimesyeh(response.data)
+    console.log('done')
+    console.log('currentstuff',timesyeh)
+    console.log(response.data);
+  } catch (error) {
+    // Handle any error that occurred during the request
+    console.error(error);
+  }
+  // timesyeh.map((each)=>{
+  //   console.log(each)
+  // })
+}
+handlePress()
+  },[])
+
+//Select specific person then get their schedule and the booked dates for him and do this
+//make sure all old dates are removed 
+const [disbleDate,setDisableDate] = useState(['Sunday'])
   const [theTimeUse,setTheTimeUser]=useState([])
   const [theBookedTimes,setTheBookedTimes]=useState([])
+  const [currIndex,setCurrIndex]=useState(null)
+  const [selectedItem,setSelectedItem]=useState([])
   const [newTimes,setNewTimes]=useState([])
+  const [isPressed,setIsPressed]=useState(true)
   const [finalres,setFinalRes]=useState([])
       const disabledDates =[]
+        console.log('ospressed',isPressed)
   useEffect(()=>{
+    console.log('thetimesye',timesyeh)
   // let currdate = '2023/05/15'
   // let endDate = '2023/05/30'
   var today = new Date()
@@ -29,17 +64,42 @@ const Appointment = () => {
     //   console.log('1')
     // }
 },[])
-useEffect(()=>{
 
-console.log('ussaaaaaaaaaaaa',theBookedTimes,theTimeUse)
+useEffect(()=>{
+  let obj ={}
+ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  timesyeh?.map((each)=>{
+   days.map((day)=>{
+    if (each[day]){
+obj[day] = each[day];
+    }
+   })
+  })
+  console.log('daobjjjjjjj',obj)
+  console.log(obj['Friday'])
+
+  const convertedData = days.reduce((result, day) => {
+    const hours = obj[day] ? JSON.parse(obj[day]) : [];
+    if (hours.length > 0) {
+      result.push({
+        day,
+        time: hours,
+      });
+    
+    }
+    return result;
+  }, []);
+  setUserSchedule(convertedData)
+    console.log('its converted',convertedData)
+// console.log('ussaaaaaaaaaaaa',theBookedTimes,theTimeUse)
   const flattenedArray1 = theTimeUse.flat()
   const flattenedArray2 = theBookedTimes.flat()
 
 
-console.log('flattenedArray1',theTimeUse,flattenedArray2)
+// console.log('flattenedArray1',theTimeUse,flattenedArray2)
 
 const combinedArray = flattenedArray1.concat(flattenedArray2)
-console.log(combinedArray)
+// console.log(combinedArray)
 // Step 3: Create a Set to store unique times and an array for the result
 const uniqueTimesSet = new Set();
 const result = [];
@@ -55,7 +115,7 @@ for (const time of combinedArray) {
 }
 setFinalRes(result)
 
-console.log('thefinalres',finalres)
+// console.log('thefinalres',finalres)
 
 
 },[theBookedTimes])
@@ -88,7 +148,7 @@ console.log('thefinalres',finalres)
     {day:'Friday',time:["8:00","10:00","12:00","14:00","16:00","18:00","19:00"]},
   ]
 const booked = [ //healthid,userid
-      {year:"2023/5/15",times:["8:00","10:00","12:00"]},
+      {year:"2023-6-07",times:["10:00-11:00"]},
       {year:"2023-5-19",times:["9:00","10:00","16:00"]},
       {year:"2023-5-22",times:["9:00","10:00","16:00"]},
       
@@ -117,38 +177,43 @@ let day = dateArray[2];
 
 let year = dateArray[3];
 let yearMonthDay = `${year}-${getMonthNumber(month)}-${day}`;
+setClickedFormatted(yearMonthDay)
   if (date!==undefined) {
     const data = new Date(date)
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  let theDay= days[data.getDay()]
-
-const mondaySchedule = healthPracSchedule.find(schedule => schedule.day === 'Monday');
-console.log('schelkaa',mondaySchedule) 
-const mondayTimes = mondaySchedule.time;
+console.log('dayday',userSchedule)
+console.log(healthPracSchedule.day)
+// const mondaySchedule = healthPracSchedule.find(schedule => schedule.day === 'Monday');
+// console.log('schelkaa',mondaySchedule) 
+// const mondayTimes = mondaySchedule.time;
 
 const datess = new Date(yearMonthDay)
 
 const dayofDate =days[datess.getUTCDay()]
 
-const schedulea= healthPracSchedule.find(schedule => schedule.day === dayofDate);
+const schedulea=userSchedule?.find(schedule => schedule.day === dayofDate);
 if (schedulea!==undefined){
 const theTimes = schedulea.time
-console.log('this is the times',theTimes)
+// console.log('this is the times',theTimes)
+console.log('found itttt',theTimes)
 setTheTimeUser([theTimes])
 // console.log('34523423',theTimes, bookTimes)
 }
 
 //found the schedule for onlick,schedulea
 
-  console.log('thers a date',date)
+  // console.log('thers a date',date)
+  console.log('yearmotng',yearMonthDay)
 const schedulea2= booked.find(schedule => schedule.year === yearMonthDay);
 //now i have the schedule for the day and the booked dates, now i have to make the booked dates as not available and rest available
-console.log('schelkaaasa',schedulea2)
-
+// console.log('schelkaaasa',schedulea2)
+console.log('eher',schedulea2)
 if (schedulea2!==undefined){
 // if (schedulea2!==undefined){
 const bookTimes = schedulea2.times
-console.log(bookTimes)
+console.log('booked',bookTimes)
+// console.log(bookTimes)
 
 setTheBookedTimes([bookTimes])
 
@@ -173,22 +238,22 @@ setTheBookedTimes([bookTimes])
   // console.log('checkdate',checkDate)
   
 }
-// setDateMatch(yearMonthDay)
-console.log('found',yearMonthDay)
+// // setDateMatch(yearMonthDay)
+// console.log('found',yearMonthDay)
 // if (date!=="" && dateMatch!==""){
   // console.log(dateMatch,'asdasd')
 const found = booked.find(item=>Object.keys(item)[0]===yearMonthDay)
 setFoundDate(found)
-console.log('founder',found)
+// console.log('founder',found)
 // }
 if (found !==undefined) {
 
   const extractedTimes = Object.entries(found).map(([_, timeArray]) => timeArray).flat();
   setFoundDate(extractedTimes)
-  console.log(extractedTimes)
+  // console.log(extractedTimes)
 // console.log('timeeee',extractedTimes)
 }
-console.log('disdis',disbleDate)
+// console.log('disdis',disbleDate)
 // Output: "2023/5/18"
 // setDateMatch( yearMonthDay)
 // Helper function to get the month number from its name
@@ -210,11 +275,44 @@ function getMonthNumber(monthName) {
 
   return months[monthName]
 }
+
   //  }
 }
+const handleColorChange=(index,time)=>{
 
-
-
+ setIsPressed(!isPressed)
+ setCurrIndex(index)
+ setFinalTime(time)
+// console.log('changing da color')
+}
+const handleBooking =()=>{
+  console.log('dadate',clickedFormatted)
+  console.log('dadate',finalTime)
+  if (finalTime===null){
+    console.log('Please selected a tome')
+  }
+  let data ={
+    date:clickedFormatted,time:finalTime,userid,healthpracID
+  }
+    const handlePress = async () =>{
+//  try {
+//     const id = '1'
+//     const response = await axios.get('http://10.0.0.12:3001/fetch');
+//     // Handle the response from the server
+//     setTimesyeh(response.data)
+//     console.log('done')
+//     console.log('currentstuff',timesyeh)
+//     console.log(response.data);
+//   } catch (error) {
+//     // Handle any error that occurred during the request
+//     console.error(error);
+//   }
+  // timesyeh.map((each)=>{
+  //   console.log(each)
+  // })
+}
+}
+//appointments per day you want? min and max maybe
 
   return (
     <View>
@@ -231,8 +329,12 @@ function getMonthNumber(monthName) {
        
       </View>
 <View style={{marginTop:50}}>
+  <Text style={{marginLeft:10}} >NOTE* - Dates can only be booked 7 days in advance</Text>
+  <Text style={{marginLeft:10}} >Appointments are 1 hour in length</Text>
+<View style={{marginLeft:10,marginBottom:10}}>
+  <Text style={{fontSize:18,fontWeight:500}} >Choose a Date</Text>
+</View>
 
-  <Text>Choose a Date</Text>
         <CalendarPicker
   onDateChange={day => {
     setDate(day)
@@ -253,26 +355,52 @@ function getMonthNumber(monthName) {
 showsHorizontalScrollIndicator={false}
 horizontal={true}
 >  
-  { finalres !==[] ? finalres.map((time) =>(
+  { finalres.length !== 0 ? finalres.map((time,index) =>(
+<>
+    <TouchableOpacity  
+  
+    onPress={()=>handleColorChange(index,time)}
 
-    <TouchableOpacity style={{backgroundColor:'blue',margin:10,width:60,padding:10}}>
+    style={[{margin:10,width:60,padding:10,borderRadius:10}, index===currIndex ? styles.notactive:styles.active]}>
        <Text style={{color:'white',textAlign:'center'}}  >
+   
         {time}
        </Text>
      </TouchableOpacity>
+
+     </>
    
   )):(
-    <View><Text>No Bookings</Text></View>
+
+    <View style={{margin:10}} >
+       
+      <Text>Sorry, no dates available!</Text></View>
   )}
+
   </ScrollView>
 
 </View>
-
+  <TouchableOpacity onPress={()=>setCurrIndex(null)}  style={{marginLeft:10}} > 
+  <Text >Clear Selection</Text>
+   </TouchableOpacity>
+<View style={{alignItems:'center',marginTop:50}} >  
 <TouchableOpacity style={{backgroundColor:'#1F3B5B',width:200,alignItems:'center',justifyContent:'center',padding:10,borderRadius:10}} >
-  <Text style={{color:'white'}} >  Place Booking</Text>
+  <Text style={{color:'white'}} onPress={()=>handleBooking()} >  Place Booking</Text>
 </TouchableOpacity>
+</View>
     </View>
   )
 }
 
 export default Appointment
+
+const styles = StyleSheet.create({
+
+  active:{
+    backgroundColor:'#1F3B5B'
+  },
+  notactive:{
+backgroundColor:'gray',
+borderColor:'silver'
+  },
+ })

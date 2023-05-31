@@ -21,6 +21,8 @@ import RegisterSc3 from './screens/RegisterScreens/RegisterSc3';
 import RegisterSc4 from './screens/RegisterScreens/RegisterSc4';
 import Book from './screens/Book';
 import Document from './screens/Document';
+import UserDashBoard from './screens/UserDashBoard';
+import ScheduleMaker from './screens/ScheduleMaker';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
@@ -90,6 +92,27 @@ console.log(istrue)
        
       ) : ( */}
         <>
+                                    {/* <Stack.Screen 
+      name="User"
+      component={UserScreen}
+      
+      /> */}
+
+                                  <Stack.Screen 
+      name="appointment"
+      component={Appointment}
+      
+      />
+                                          <Stack.Screen 
+      name="Scheduler"
+      component={ScheduleMaker}
+      
+      />
+
+
+        
+
+
                           {/* <Stack.Screen 
       name="appointment"
       component={Appointment}
@@ -139,17 +162,17 @@ console.log(istrue)
       
       />
 
-
+{/* 
                             <Stack.Screen 
       name="User"
       component={UserScreen}
       
-      />
-                            <Stack.Screen 
+      /> */}
+                            {/* <Stack.Screen 
       name="Book"
       component={Book}
       
-      />
+      /> */}
 
 
       
