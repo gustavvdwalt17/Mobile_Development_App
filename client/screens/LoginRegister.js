@@ -1,13 +1,30 @@
 import { View, Text,Image,TextInput,StyleSheet,TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { telemedicine } from '../assets'
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 import loginState, { changeLoginState, changeRegiserState, registerState } from '../slices/loginState'
 const LoginRegister = ({navigation}) => {
 //c
 const [active,setActive]=useState('user')
+const [loginValues,setLoginValues]=useState({name:'',password:''})
   // const {login} = useSelector((state) => state.loginSt)
 const dispatch = useDispatch()
+
+useEffect(()=>{
+console.log(loginValues)
+},[loginValues])
+const handlePress = async () =>{
+ try {
+  
+    const response = await axios.post('http://10.0.0.4:3001/user',  loginValues );
+    // Handle the response from the server
+    console.log(response.data);
+  } catch (error) {
+    // Handle any error that occurred during the request
+    console.error(error);
+  }
+}
   return (
     <View style={{display:'flex',alignItems:'center', backgroundColor:'#D8EAEF',height:'100%'}}>
     <Image source={telemedicine} style={{marginTop:10,resizeMode:'contain',width:350,height:300,borderRadius:10}} />
@@ -47,10 +64,10 @@ const dispatch = useDispatch()
  <View >
   <View>
 
-  <TextInput style={styles.inputText}  ></TextInput>
+  <TextInput onChangeText={(val)=>setLoginValues({...loginValues,['name']:val})}  style={styles.inputText}  ></TextInput>
 
-  <Text style={{position:'absolute',left:30,top:-3}} >Email</Text>
-  <TextInput style={styles.inputText}  ></TextInput>
+  <Text  style={{position:'absolute',left:30,top:-3}} >Email</Text>
+  <TextInput onChangeText={(val)=>setLoginValues({...loginValues,['password']:val})}   style={styles.inputText}  ></TextInput>
     <Text style={{position:'absolute',bottom:73,left:30}} >Password</Text>
   </View>
   
@@ -67,7 +84,7 @@ const dispatch = useDispatch()
 </View>
 <View style={{alignItems:'center'}} >
   <View style={{backgroundColor:'#26389E',width:200,borderRadius:20,margin:10}} >
-  <TouchableOpacity> 
+  <TouchableOpacity onPress={handlePress}> 
     <Text style={{color:'white',textAlign:'center',padding:10}}>
   Log in
   </Text> 
