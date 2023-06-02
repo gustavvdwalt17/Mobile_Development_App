@@ -6,4 +6,6 @@ export {default as pfp} from './man.png'
 export {default as rarrow} from './right-arrow.png'
 export {default as background} from './background_2.jpg'
 export {default as background2} from './capture.png'
+
 export {default as usher} from './usher.png'
+export {default as trash} from './trash-bin.png'

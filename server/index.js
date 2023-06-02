@@ -25,13 +25,75 @@ connection.connect((error) => {
   }
 });
 
-app.get('/fetch', (req, res) =>{
-const id = '1';
-const query = `Select * from schedule where HealthPracID = ${id}`;
-
-
+app.get('/getuserappointments',(req,res) => {
+const id = '1'
+const query = `Select * from appointments where user_id = ${id}`;
 
 connection.query(query, (error, results, fields) => {
+  if (error) {
+    console.error('Error inserting data:', error);
+  } else {
+    // console.log('Data inserted successfully:', results);
+    res.status(200).send(results);
+  }
+})
+})
+
+app.get('/getpracs',(req,res) => {
+
+const query = `Select * from healthprac`;
+
+connection.query(query, (error, results, fields) => {
+  if (error) {
+    console.error('Error inserting data:', error);
+  } else {
+    // console.log('Data inserted successfully:', results);
+    res.status(200).send(results);
+  }
+})
+})
+
+
+app.get('/fetch', (req, res) =>{
+const id = '1';
+
+const query = `Select * from schedule where HealthPracID = ${id}`;
+const query2 = `Select * from appointments where HealthPracID = ${id}`;
+
+
+
+connection.query(query, (err, results1) => {
+    if (err) {
+      console.error('Error executing query 1:', err);
+      return;
+    }
+    // console.log('Query 1 results:', results1);
+    
+    connection.query(query2, (err, results2) => {
+      if (err) {
+        console.error('Error executing query 2:', err);
+        return;
+      }
+      // console.log('Query 2 results:', results2);
+      
+      // Send the results to the user
+      const combinedResults = {
+        query1Results: results1,
+        query2Results: results2
+      };
+      res.json(combinedResults);
+    });
+  });
+// connection.end()
+
+})
+app.post('/appointment', (req, res) =>{
+  console.log('whatssuppers',req.body)
+const  {date,time,userid,healthpracID}=req.body
+console.log(date,time,userid,healthpracID)
+const query = `INSERT INTO appointments (user_id,healthpracID,time,day) VALUES (?,?,?,?)`;
+let values = [userid,healthpracID,time,date]
+connection.query(query,values, (error, results, fields) => {
   if (error) {
     console.error('Error inserting data:', error);
   } else {

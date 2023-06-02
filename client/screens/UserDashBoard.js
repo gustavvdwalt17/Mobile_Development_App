@@ -5,17 +5,15 @@ import { rarrow } from '../assets'
 import axios from 'axios'
 import { background } from '../assets'
 const UserDashBoard = ({navigation}) => {
-  useEffect(()=>{
-    handlePress()
-  },[])
+
   const [healthPrac,setHealthPrac]=useState([])
 
   const handlePress = async () =>{
  try {
-  
-    const response = await axios.get('http://10.0.0.4:3001/user');
+    console.log('its runnan')
+    const response = await axios.get('http://10.0.0.7:3001/getpracs');
         setHealthPrac(response.data)
-    let theData = response.data
+        let theData = response.data
     // console.log('returned daya',theData);
 
     // console.log('healthPrats',healthPrac)
@@ -29,6 +27,9 @@ const UserDashBoard = ({navigation}) => {
     // }
   }
 }
+  useEffect(()=>{
+    handlePress()
+  },[])
 let tempData = [
   {
  id:'1',
@@ -79,7 +80,7 @@ title:'chiropractor',
       <Text style={{fontSize:22,marginLeft:10,fontWeight:600}} >Welcome User</Text>
     </View>
 
-    <View>
+    <View >
       <Text style={{margin:20,fontSize:22}}>Upcoming Appointments</Text>
 
 
@@ -88,7 +89,9 @@ title:'chiropractor',
         <Text style={{color:'white',margin:5}} >12/04/2023</Text>
 
 
-        <TouchableOpacity style={{width:50,height:50,borderRadius:25,backgroundColor:'white',position:'absolute',right:10,bottom:10,}}>
+        <TouchableOpacity style={{width:50,height:50,borderRadius:25,backgroundColor:'white',position:'absolute',right:10,bottom:10,}}
+        onPress={()=>navigation.navigate('upcoming')}
+        >
           <View style={{alignItems:'center',marginTop:15}} >
        <Image source={rarrow} style={{resizeMode:'contain',width:20,height:20}} />
           </View>

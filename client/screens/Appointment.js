@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,Image, ScrollView,StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity,Image, ScrollView,StyleSheet,Modal, Button } from 'react-native'
 import React from 'react'
 import axios from 'axios'
 import CalendarPicker from 'react-native-calendar-picker'
@@ -10,17 +10,20 @@ const Appointment = () => {
   const [userSchedule,setUserSchedule]=useState(null)
   const [clickedFormatted,setClickedFormatted]=useState(null)
   const [finalTime,setFinalTime]=useState(null)
+  const [modal,setModal]=useState(false)
+  const [bookedDates,setBookedDates]=useState(null)
   useEffect(()=>{
   const handlePress = async () =>{
  try {
+  console.log('first')
   //also fetch appoinemtns and then delete old appointments
     const id = '1'
-    const response = await axios.get('http://10.0.0.12:3001/fetch');
+    const response = await axios.get('http://10.0.0.7:3001/fetch');
     // Handle the response from the server
-    setTimesyeh(response.data)
-    console.log('done')
-    console.log('currentstuff',timesyeh)
-    console.log(response.data);
+    const { query1Results, query2Results } = response.data;
+    setTimesyeh(query1Results)
+    setBookedDates(query2Results)
+    // console.log(query2Results,'2222222222');
   } catch (error) {
     // Handle any error that occurred during the request
     console.error(error);
@@ -30,7 +33,35 @@ const Appointment = () => {
   // })
 }
 handlePress()
+  
   },[])
+  useEffect(()=>{
+    let obj ={}
+  console.log('datimesyhe',timesyeh)
+ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  timesyeh?.map((each)=>{
+   days.map((day)=>{
+    if (each[day]){
+obj[day] = each[day];
+    }
+   })
+  })
+  // console.log('daobjjjjjjj',obj)
+  // console.log(obj['Friday'])
+
+  const convertedData = days.reduce((result, day) => {
+    const hours = obj[day] ? JSON.parse(obj[day]) : [];
+    if (hours.length > 0) {
+      result.push({
+        day,
+        time: hours,
+      });
+    
+    }
+    return result;
+  }, []);
+  setUserSchedule(convertedData)
+  },[timesyeh,bookedDates])
 
 //Select specific person then get their schedule and the booked dates for him and do this
 //make sure all old dates are removed 
@@ -43,9 +74,9 @@ const [disbleDate,setDisableDate] = useState(['Sunday'])
   const [isPressed,setIsPressed]=useState(true)
   const [finalres,setFinalRes]=useState([])
       const disabledDates =[]
-        console.log('ospressed',isPressed)
+        // console.log('ospressed',isPressed)
   useEffect(()=>{
-    console.log('thetimesye',timesyeh)
+    // console.log('thetimesye',timesyeh)
   // let currdate = '2023/05/15'
   // let endDate = '2023/05/30'
   var today = new Date()
@@ -66,36 +97,36 @@ const [disbleDate,setDisableDate] = useState(['Sunday'])
 },[])
 
 useEffect(()=>{
-  let obj ={}
- const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  timesyeh?.map((each)=>{
-   days.map((day)=>{
-    if (each[day]){
-obj[day] = each[day];
-    }
-   })
-  })
-  console.log('daobjjjjjjj',obj)
-  console.log(obj['Friday'])
+//   let obj ={}
+//  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//   timesyeh?.map((each)=>{
+//    days.map((day)=>{
+//     if (each[day]){
+// obj[day] = each[day];
+//     }
+//    })
+//   })
+//   console.log('daobjjjjjjj',obj)
+//   // console.log(obj['Friday'])
 
-  const convertedData = days.reduce((result, day) => {
-    const hours = obj[day] ? JSON.parse(obj[day]) : [];
-    if (hours.length > 0) {
-      result.push({
-        day,
-        time: hours,
-      });
+//   const convertedData = days.reduce((result, day) => {
+//     const hours = obj[day] ? JSON.parse(obj[day]) : [];
+//     if (hours.length > 0) {
+//       result.push({
+//         day,
+//         time: hours,
+//       });
     
-    }
-    return result;
-  }, []);
-  setUserSchedule(convertedData)
-    console.log('its converted',convertedData)
+//     }
+//     return result;
+//   }, []);
+//   setUserSchedule(convertedData)
+    // console.log('its converted',convertedData)
 // console.log('ussaaaaaaaaaaaa',theBookedTimes,theTimeUse)
   const flattenedArray1 = theTimeUse.flat()
   const flattenedArray2 = theBookedTimes.flat()
-
-
+  //flat 1 is the schedule, flat 2 is the appointmets
+  console.log('flattenedArray1',flattenedArray1,'flattenedArray2',flattenedArray2)
 // console.log('flattenedArray1',theTimeUse,flattenedArray2)
 
 const combinedArray = flattenedArray1.concat(flattenedArray2)
@@ -105,15 +136,19 @@ const uniqueTimesSet = new Set();
 const result = [];
 
 // Step 4: Iterate over the combined array
-for (const time of combinedArray) {
+for (const time of flattenedArray1) {
+  console.log('curentlloopp',time)
   // Check if the time is already in the Set
-  if (!flattenedArray1.includes(time) || !flattenedArray2.includes(time)) {
+  if (!flattenedArray2.includes(time)) {
     // Add the time to the Set and result array
     uniqueTimesSet.add(time);
     result.push(time);
   }
 }
+
+console.log('finalresult',result)
 setFinalRes(result)
+console.log('2')
 
 // console.log('thefinalres',finalres)
 
@@ -163,6 +198,7 @@ checkDates()
 },[date])
 
 function checkDates(){
+ 
   setTheBookedTimes([])
   setTheTimeUser([])
   setFoundDate('')
@@ -182,8 +218,8 @@ setClickedFormatted(yearMonthDay)
     const data = new Date(date)
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  let theDay= days[data.getDay()]
-console.log('dayday',userSchedule)
-console.log(healthPracSchedule.day)
+// console.log('dayday',userSchedule)
+// console.log(healthPracSchedule.day)
 // const mondaySchedule = healthPracSchedule.find(schedule => schedule.day === 'Monday');
 // console.log('schelkaa',mondaySchedule) 
 // const mondayTimes = mondaySchedule.time;
@@ -191,12 +227,14 @@ console.log(healthPracSchedule.day)
 const datess = new Date(yearMonthDay)
 
 const dayofDate =days[datess.getUTCDay()]
-
+ console.log('Checking dates',dayofDate,userSchedule)
 const schedulea=userSchedule?.find(schedule => schedule.day === dayofDate);
 if (schedulea!==undefined){
+  console.log('aaaaa',schedulea)
 const theTimes = schedulea.time
-// console.log('this is the times',theTimes)
-console.log('found itttt',theTimes)
+
+console.log('this is the times',theTimes)
+// console.log('found itttt',theTimes)
 setTheTimeUser([theTimes])
 // console.log('34523423',theTimes, bookTimes)
 }
@@ -204,18 +242,23 @@ setTheTimeUser([theTimes])
 //found the schedule for onlick,schedulea
 
   // console.log('thers a date',date)
-  console.log('yearmotng',yearMonthDay)
-const schedulea2= booked.find(schedule => schedule.year === yearMonthDay);
+  // console.log('yearmotng',yearMonthDay)
+const schedulea2= bookedDates?.filter(schedule => schedule.day === yearMonthDay);
 //now i have the schedule for the day and the booked dates, now i have to make the booked dates as not available and rest available
 // console.log('schelkaaasa',schedulea2)
 console.log('eher',schedulea2)
 if (schedulea2!==undefined){
 // if (schedulea2!==undefined){
-const bookTimes = schedulea2.times
-console.log('booked',bookTimes)
-// console.log(bookTimes)
+const times = [];
 
-setTheBookedTimes([bookTimes])
+schedulea2.forEach(appointment => {
+  const time = appointment.time;
+  times.push(time);
+});
+console.log('da times',times)
+// console.log(bookTimes)
+console.log('1')
+setTheBookedTimes(times)
 
 }
 
@@ -242,7 +285,8 @@ setTheBookedTimes([bookTimes])
 // console.log('found',yearMonthDay)
 // if (date!=="" && dateMatch!==""){
   // console.log(dateMatch,'asdasd')
-const found = booked.find(item=>Object.keys(item)[0]===yearMonthDay)
+const found = bookedDates?.find(item=>Object.keys(item)[0]===yearMonthDay)
+console.log('founder',found)
 setFoundDate(found)
 // console.log('founder',found)
 // }
@@ -286,34 +330,41 @@ const handleColorChange=(index,time)=>{
 // console.log('changing da color')
 }
 const handleBooking =()=>{
-  console.log('dadate',clickedFormatted)
-  console.log('dadate',finalTime)
-  if (finalTime===null){
-    console.log('Please selected a tome')
-  }
-  let data ={
-    date:clickedFormatted,time:finalTime,userid,healthpracID
-  }
-    const handlePress = async () =>{
+  setModal(true)
+  // console.log('dadate',clickedFormatted)
+  // console.log('dadate',finalTime)
+
+//   if (finalTime===null){
+//     console.log('Please selected a tome')
+//   }
+//   let data ={
+//     date:clickedFormatted,time:finalTime,userid:1,healthpracID:1
+//   }
+//     const handlePresser = async () =>{
 //  try {
-//     const id = '1'
-//     const response = await axios.get('http://10.0.0.12:3001/fetch');
+   
+//     const response = await axios.post('http://10.0.0.12:3001/appointment',data);
 //     // Handle the response from the server
-//     setTimesyeh(response.data)
-//     console.log('done')
-//     console.log('currentstuff',timesyeh)
+
 //     console.log(response.data);
 //   } catch (error) {
 //     // Handle any error that occurred during the request
-//     console.error(error);
+//     console.error(error.message);
 //   }
-  // timesyeh.map((each)=>{
-  //   console.log(each)
-  // })
-}
+
+// }
+// handlePresser()
 }
 //appointments per day you want? min and max maybe
+const toggleModal = (state)=>{
 
+console.log(state)
+if (state==='confirm'){
+  //place booking
+}else{
+setModal(false)
+}
+}
   return (
     <View>
 
@@ -335,6 +386,47 @@ const handleBooking =()=>{
   <Text style={{fontSize:18,fontWeight:500}} >Choose a Date</Text>
 </View>
 
+
+{/* <View>
+  {modal &&
+  
+  <View style={{backgroundColor:'red',display:'flex',justifyContent:'center',alignItems:'center',width:500,height:500}} >
+    <Text>yo</Text>
+    </View>}
+</View> */}
+<Modal
+visible={modal}
+ animationType="slide"
+  onRequestClose={toggleModal}
+        // transparent={true}
+        // onRequestClose={toggleModal}
+>
+
+ <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+<Text>Please Confirm Booking</Text>  
+  <View
+  style={{display:'flex',flexDirection:'row'}}
+  >
+
+ <Button title="Confirm" onPress={()=>toggleModal('confirm')} />
+
+  
+      
+      
+      <Button title="Cancel" onPress={()=>toggleModal('false')} />
+  </View>
+
+</View>
+
+  {/* <View>
+  {modal &&
+  
+  <View style={{backgroundColor:'red',display:'flex',justifyContent:'center',alignItems:'center',width:500,height:500}} >
+    <Text>yo</Text>
+    </View>}
+</View> */}
+</Modal>
         <CalendarPicker
   onDateChange={day => {
     setDate(day)
@@ -346,6 +438,8 @@ const handleBooking =()=>{
    
 
         />
+
+  
 </View>
 
     {/* <CalendarPicker/> */}
@@ -355,15 +449,16 @@ const handleBooking =()=>{
 showsHorizontalScrollIndicator={false}
 horizontal={true}
 >  
+{/* first click doesn run times or finalres in other words */}
   { finalres.length !== 0 ? finalres.map((time,index) =>(
 <>
     <TouchableOpacity  
-  
+
     onPress={()=>handleColorChange(index,time)}
 
     style={[{margin:10,width:60,padding:10,borderRadius:10}, index===currIndex ? styles.notactive:styles.active]}>
        <Text style={{color:'white',textAlign:'center'}}  >
-   
+ {console.log('3')}   
         {time}
        </Text>
      </TouchableOpacity>

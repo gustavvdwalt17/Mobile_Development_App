@@ -23,6 +23,7 @@ import Book from './screens/Book';
 import Document from './screens/Document';
 import UserDashBoard from './screens/UserDashBoard';
 import ScheduleMaker from './screens/ScheduleMaker';
+import UpcomingAppointments from './screens/UpcomingAppointments';
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
@@ -97,6 +98,11 @@ console.log(istrue)
       component={UserScreen}
       
       /> */}
+                                        <Stack.Screen 
+      name="dashr"
+      component={UserDashBoard}
+      
+      />
 
                                   <Stack.Screen 
       name="appointment"
@@ -106,6 +112,11 @@ console.log(istrue)
                                           <Stack.Screen 
       name="Scheduler"
       component={ScheduleMaker}
+      
+      />
+                                                <Stack.Screen 
+      name="upcoming"
+      component={UpcomingAppointments}
       
       />
 
