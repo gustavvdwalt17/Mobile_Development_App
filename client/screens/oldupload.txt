@@ -1,0 +1,45 @@
+import React from 'react';
+import { Button, View } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
+import axios from 'axios';
+
+const Document = () => {
+  const handleDocumentPick = async () => {
+    try {
+      const document = await DocumentPicker.getDocumentAsync({});
+
+      // Create a FormData object to send the document to the server
+      const formData = new FormData();
+      formData.append('document', {
+        uri: document.uri,
+        name: document.name,
+        type: document.type,
+      });
+console.log(document.uri);
+      // Send the FormData object to your Node.js server using axios
+      // const response = await axios.post('http://your-nodejs-server/upload', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
+
+      // console.log(response.data); // Response from the server
+    } catch (error) {
+      console.error('Error picking document:', error);
+    }
+  };
+
+  return (
+   
+    <View style={{marginTop:200}} ><Button title="Pick Document" onPress={handleDocumentPick} /></View>
+
+    
+  );
+};
+
+export default Document;
+
+
+      uri: documentUri,
+      name: 'mydocument.pdf', // Set the desired filename
+      type: 'application/pdf', // Set the document type

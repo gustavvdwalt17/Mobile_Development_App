@@ -3,7 +3,7 @@ import React from 'react'
 import { login } from '../assets'
 import { doctor } from '../assets'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeLoginState, changeRegiserState } from '../slices/loginState'
+import { changeLoginState, changeRegiserState } from '../slices/allState'
 const JoinScreen = ({navigation}) => {
   // const {login} = useSelector((state) => state.loginSt)
   // const login = useSelector((state) => state.loginSt.login)
@@ -29,8 +29,8 @@ const JoinScreen = ({navigation}) => {
   
     </View>
        <View>
-      <Text style={{fontWeight:800,fontSize:25,textAlign:'center',marginTop:50}} >Our App is the Best App that exists on planet earth</Text>
-    <Text  style={{textAlign:'center',color:'gray',marginTop:10}} >lorum ipsum ipela isad asood asi oasd</Text>
+      <Text style={{fontWeight:800,fontSize:25,textAlign:'center',marginTop:50}} >Welcome to our Application!</Text>
+    <Text  style={{textAlign:'center',color:'gray',marginTop:10}} >Please log in or register below!</Text>
      </View>
 
 
@@ -39,12 +39,12 @@ const JoinScreen = ({navigation}) => {
 <TouchableOpacity onPress={handlePress}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 > 
-  <Text style={{color:'white'}} > Login</Text>
+  <Text style={{color:'white',marginLeft:30}} > Login</Text>
   </TouchableOpacity>
 <TouchableOpacity   onPress={handlePressReg}
 style={{backgroundColor:'#26389E',padding:15,borderRadius:5,width:150,margin:14}}
 >
-   <Text  style={{color:'white'}} >Register</Text>
+   <Text  style={{color:'white',marginLeft:30}} >Register</Text>
    </TouchableOpacity>
 
      </View>

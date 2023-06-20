@@ -1,8 +1,72 @@
 import { View, Text, StyleSheet,TextInput,TouchableOpacity} from 'react-native'
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
+import { Alert } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { dataForRegister } from '../../slices/allState'
 const RegsterSc2 = ({navigation}) => {
+    const dispatch = useDispatch()
+
+   
         const {isUser} = useSelector((state)=> state.loginSt)
+          const registerData = useSelector((state) => state.loginSt.registerData)
+            const [formData,setFormData] = useState(null)
+   useEffect(()=>{
+  setFormData(registerData)
+   },[registerData])
+        
+       const handleInputChange = (fieldName, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [fieldName]: value
+    }));
+    console.log(formData)
+  };
+
+  const handleNav = () => {
+
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex pattern for email validation
+
+     if (emailRegex.test(formData.email)) {
+        if (formData.password===null || formData.confirmPassword===null){
+            handleAlerts('Please enter a password')
+            return
+        }
+        if (formData.password.length<8){
+             handleAlerts('password must be at least 8 characters')
+            return
+        }
+        if (formData.password !== formData.confirmPassword){
+             handleAlerts('Passwords do not match')
+            return
+        }
+        
+    dispatch(dataForRegister(formData))
+    navigation.navigate('RegisterSc3')
+    // Valid email address
+    //validate the password next
+  } else {
+    // Invalid email address
+
+    handleAlerts('Email is incorrect')
+    return
+  }
+
+};
+const handleAlerts = (msg) => {
+                      Alert.alert(
+      'Error',
+      msg,
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('OK Pressed'),
+        },
+      ],
+      { cancelable: false }
+    );
+   
+}
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
     {/* <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:50}} >
@@ -24,23 +88,21 @@ const RegsterSc2 = ({navigation}) => {
     </View>
 
     <View>
-        <Text style={{color:'silver',margin:10,marginTop:2}} >  Cell Number</Text>
-    <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
-   
+    
         <Text style={{color:'silver',margin:10,marginTop:2}} >  Email</Text>
-    <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
+    <TextInput onChangeText={(value)=> handleInputChange('email',value)} style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
    
         <Text style={{color:'silver',margin:10,marginTop:2}} > Password</Text>
-    <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
+    <TextInput onChangeText={(value)=> handleInputChange('password',value)}  style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
    
         <Text style={{color:'silver',margin:10,marginTop:2}} >  Confirm Password</Text>
-    <TextInput style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:15,marginTop:5}} />
+    <TextInput onChangeText={(value)=> handleInputChange('confirmPassword',value)}  style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:5}} />
    
     </View>
 
 <View style={{display:'flex',alignItems:'center',marginTop:50}} >
-    <TouchableOpacity style={{backgroundColor:'#375169',width:150,height:50,borderRadius:20}} > 
-        <Text style={{marginTop:15,color:'white',textAlign:'center'}} onPress={()=>navigation.navigate('RegisterSc3')} >Next</Text>
+    <TouchableOpacity  onPress={()=>handleNav()} style={{backgroundColor:'#375169',width:150,height:50,borderRadius:20}} > 
+        <Text style={{marginTop:15,color:'white',textAlign:'center'}} >Next</Text>
     </TouchableOpacity>
 </View>
 
