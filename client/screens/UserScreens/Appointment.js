@@ -1,8 +1,10 @@
 
 import { View, Text, TouchableOpacity,Image, ScrollView,StyleSheet,Modal, Button, ImageBackground } from 'react-native'
 import React from 'react'
-import moment from 'moment';
+
+import shortid from 'shortid';
 import axios from 'axios'
+import { customAlphabet } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 import CalendarPicker from 'react-native-calendar-picker'
 import { useState,useEffect } from 'react'
@@ -15,11 +17,12 @@ import { useRoute } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 const Appointment = ({navigation}) => {
-  const healthid = useSelector((state) => state.loginSt.currentHealthPracAppointment)
+  const healthid = useSelector((state) => state.loginSt.healthId)
   const curruserid = useSelector((state) => state.loginSt.currentUserId)
    const currHealthName = useSelector((state) => state.loginSt.healthPracName)
- 
+  const currUserName = useSelector((state) => state.loginSt.userName)
 
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10); // Customize the characters and length as needed
 
 const [timesyeh,setTimesyeh]=useState(null)
   const [userSchedule,setUserSchedule]=useState(null)
@@ -75,15 +78,15 @@ obj[day] = each[day];
 
 
 
-const obj2 = {
-  "Sunday": ["12:00-13:00", "14:00-15:00", "16:00-17:00"],
-  "Monday": ["9:00-10:00", "11:00-12:00", "13:00-14:00"],
-  "Tuesday": ["10:00-11:00", "12:00-13:00", "14:00-15:00"],
-  "Wednesday": ["8:00-9:00", "10:00-11:00", "12:00-13:00"],
-  "Thursday": ["11:00-12:00", "13:00-14:00", "15:00-16:00"],
-  "Friday": ["9:00-10:00", "11:00-12:00", "13:00-14:00"],
-  "Saturday": ["10:00-11:00", "12:00-13:00", "14:00-15:00"]
-};
+// const obj2 = {
+//   "Sunday": ["12:00-13:00", "14:00-15:00", "16:00-17:00"],
+//   "Monday": ["9:00-10:00", "11:00-12:00", "13:00-14:00"],
+//   "Tuesday": ["10:00-11:00", "12:00-13:00", "14:00-15:00"],
+//   "Wednesday": ["8:00-9:00", "10:00-11:00", "12:00-13:00"],
+//   "Thursday": ["11:00-12:00", "13:00-14:00", "15:00-16:00"],
+//   "Friday": ["9:00-10:00", "11:00-12:00", "13:00-14:00"],
+//   "Saturday": ["10:00-11:00", "12:00-13:00", "14:00-15:00"]
+// };
 
 
 const convertedData = Object.entries(obj).reduce((result, [day, times]) => {
@@ -212,7 +215,34 @@ getFinalres()
 
 
 
-useEffect(()=>{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    useEffect(()=>{
 checkDates()
 },[date])
 
@@ -379,7 +409,7 @@ if (state==='confirm'){
   }
 
     let data ={
-    date:clickedFormatted,time:finalTime,userid:curruserid,healthpracID:healthid,name:currHealthName
+    date:clickedFormatted,time:finalTime,userid:curruserid,healthpracID:healthid,name:currHealthName,patientName:currUserName
   }
     const handlePresser = async () =>{
  try {
@@ -521,10 +551,30 @@ visible={modal}
 showsHorizontalScrollIndicator={false}
 horizontal={true}
 >  
-  { finalres.length !== 0 ? finalres.map((time,index) =>(
+{finalres.length !== 0 ? (
+  finalres.map((time, index) => (
+    <React.Fragment key={shortid.generate()}>
+      <TouchableOpacity
+        onPress={() => handleColorChange(index, time)}
+        style={[
+          { margin: 10, width: 100, padding: 10, borderRadius: 10 },
+          index === currIndex ? styles.notactive : styles.active
+        ]}
+      >
+        <Text style={{ color: 'white', textAlign: 'center' }}>{time}</Text>
+      </TouchableOpacity>
+    </React.Fragment>
+  ))
+) : (
+  <View key={shortid.generate()} style={{ margin: 10 }}>
+    <Text style={{ color: 'white' }}>Sorry, no dates available!</Text>
+  </View>
+)}
+
+  {/* { finalres.length !== 0 ? finalres.map((time,index) =>(
 <>
     <TouchableOpacity  
-key={index}
+key={shortid.generate()}
     onPress={()=>handleColorChange(index,time)}
 
     style={[{margin:10,width:100,padding:10,borderRadius:10}, index===currIndex ? styles.notactive:styles.active]}>
@@ -538,10 +588,10 @@ key={index}
    
   )):(
 
-    <View style={{margin:10}} >
+    <View key={shortid.generate()} style={{margin:10}} >
        
       <Text style={{color:'white'}}>Sorry, no dates available!</Text></View>
-  )}
+  )} */}
 
   </ScrollView>
 

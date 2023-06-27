@@ -14,14 +14,13 @@ const [modal,setModal] = useState(false)
 const [appointmentId,setAppointmentId] = useState(null)
 const [healthPracId,sethealthPracId] = useState(null)
 const [deletedappointments,setDeletedAppointments] = useState(null)
-  const handleDelete = async (id) => {
-
-  }
+const [dateOfApp,setDateOfApp] = useState(null)
+   const currUserName = useSelector((state) => state.loginSt.userName)
   const toggleModal = async (state) =>{
    if (state === 'confirm'){
      try {
           let data ={ //FIX THIS CAUSE CURRENT USERID MAY NOT EXISTS
- userid:'5',healthpracID:healthPracId ,canceledDate:new Date(),useradd:'yes',appId:appointmentId,name:'jolla'
+ userid:curruserid,healthpracID:healthPracId ,canceledDate:new Date(),useradd:'yes',appId:appointmentId,name:currUserName,dop:dateOfApp
 //  dateofAppointment:healthPracSchedule[0].day
   }
 
@@ -113,16 +112,16 @@ visible={modal}
 </Modal>
 
         <View style={{display:'flex',flexDirection:'row',marginTop:30,marginLeft:10}} >
-            <Image style={{resizeMode:'contain',width:100,height:100,borderRadius:50}} source={pfp} ></Image>
-            <Text style={{color:'white',fontSize:18,marginLeft:5}} >Upcoming Appointments</Text>
+            <Image style={{resizeMode:'contain',width:60,height:60,borderRadius:30}} source={pfp} ></Image>
+            <Text style={{color:'white',fontSize:18,marginLeft:5,width:300}} >Upcoming Appointments for {currUserName}.</Text>
         </View>
-        <View style={{width:300,borderRadius:10,margin:10}} >
+        <View style={{width:330,borderRadius:10,margin:10}} >
           {console.log('Appointments',appointments)}
     {appointments?.map((item,index)=>{
         return (
             <View key={index} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',marginTop:10,backgroundColor:'white',borderRadius:10}}>
             <View style={{padding:10}}>
-                     <Text style={{color:'black'}}>{item.healthpracname}</Text>
+                     <Text style={{color:'black'}}>HealthPractitioner: {item.healthpracname}</Text>
                 <Text style={{color:'black'}}>Date: {item.day}</Text>
                 <Text style={{color:'black'}}>Time: {item.time}</Text>
 
@@ -132,6 +131,7 @@ visible={modal}
               setModal(true)
                 sethealthPracId(item.HealthPracID) 
             setAppointmentId(item.appointment_id)
+            setDateOfApp(item.day)
             }} >
                 <Image 
                 style={{resizeMode:'contain',width:50,height:50,borderRadius:50}}

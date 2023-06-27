@@ -4,6 +4,7 @@ import axios from 'axios'
 import { trash } from '../../assets'
 import { StackActions } from '@react-navigation/native';
 import IP_ADDRESS from '../ipadress'
+import { useSelector } from 'react-redux';
 const  HealthPracMessages = ({navigation}) => {
 
 
@@ -11,20 +12,29 @@ const  HealthPracMessages = ({navigation}) => {
 
   const [messages,setMessages] = useState(null)
     const [deleted,setDeleted] = useState(null)
+    const healthid = useSelector((state) => state.loginSt.healthId) //change  this  doesnt have to do with login
     const handleMessages = async () =>{
     try {
               console.log('de data')
   //also fetch appoinemtns and then delete old appointments
     const id = '1'
 let datea = {
-      id:1,
+      id:healthid,
       useradd:'yes'
 }
     const response = await axios.get(`http://${IP_ADDRESS}/fetchmsg`,{params:datea});
     // Handle the response from the server
-    const data = response.data;
-        console.log('de data',data)
-        setMessages(response.data)
+    const newData = response.data;
+       const newItems = response.data.map((item) => {
+  const date = new Date(item.DateCancelled);
+  const formattedDate = date.toISOString().split('T')[0];
+
+  return {
+    ...item,
+    DateCancelled: formattedDate,
+  };
+});
+        setMessages(newItems)
   } catch (error) {
 
     console.error(error);
@@ -67,22 +77,22 @@ const handleMsgDelete = async(id) => {
    </View>
        
        <View style={{marginTop:35}} >
-          {console.log(messages)}
+          {console.log(messages,'assad')}
         {messages?.map((msg,index)=>{
     
-    const {note,Date,userName } = msg
+    const {note,Date,userName,DateCancelled,AppointmentDate } = msg
             return (
                 <View key={index}>
-         <Text style={{color:'white',marginLeft:10,marginBottom:5}} > 2023/02/32</Text>     
+         <Text style={{color:'white',marginLeft:10,marginBottom:5}} >{DateCancelled}</Text>     
      
      
-       <View  style={{display:'flex',backgroundColor:'gray',marginLeft:10,width:300,borderRadius:8,padding:5,marginBottom:10}} >
+       <View  style={{display:'flex',backgroundColor:'gray',marginLeft:10,width:300,borderRadius:8,padding:5,marginBottom:10,borderBottomRightRadius:15}} >
             {/* <Text style={{color:'white'}} >{Date}</Text> */}
      
      <View style={{display:'flex',justifyContent:'space-between',flexDirection:'row'}} >
      <View>
       <Text style={{color:'white'}}>User Name:{userName}</Text>
-      <Text style={{color:'white'}}>Appointment Date: 23/03/2032</Text>
+      <Text style={{color:'white'}}>Appointment Date: {AppointmentDate}</Text>
       
       {/* <Text style={{color:'white'}}>Cancel Date:2023/02/32</Text> */}
 </View>

@@ -1,9 +1,11 @@
-import { View, Text ,StyleSheet,TextInput, TouchableOpacity,Alert} from 'react-native'
+import { View, Text ,StyleSheet,TextInput, TouchableOpacity,Alert,Auth} from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { dataForRegister, healthPracorUser, registerdata } from '../../slices/allState'
 import { useEffect } from 'react'
+import axios from 'axios'
+import IP_ADDRESS from '../ipadress'
 const Register = ({navigation}) => {
     const dispatch = useDispatch()
     //c
@@ -24,7 +26,7 @@ const [isUser,setIsUser]=useState('true')
 // },[active])
 
 
-const handlePress = () => {
+const handlePress = async () => {
       const saNumberRegex = /^(?:\+27|0)[1-9]\d{8}$/; 
     if (formData.phone ==='' ){
           Alert.alert(
@@ -41,8 +43,22 @@ const handlePress = () => {
     return
     }
 
-   
-   
+    //   let email = 'goosevdwalt@gmail.com'
+    //   try {
+    //   // Send the email to the backend for verification
+    //   const response = await axios.post(`http://${IP_ADDRESS}/register`, { email });
+      
+    //   if (response.data.success) {
+    //     // Verification email sent successfully
+    //     Alert.alert('Success', 'Verification email sent!');
+    //   } else {
+    //     // Failed to send verification email
+    //     Alert.alert('Error', 'Failed to send verification email. Please try again.');
+    //   }
+    // } catch (error) {
+    //   // An error occurred
+    //   Alert.alert('Error', 'An error occurred. Please try again later.');
+    // }
 
    if (saNumberRegex.test(formData.phone)) {
     // Valid South African number
@@ -67,6 +83,7 @@ const handlePress = () => {
     // dispatch(healthPracorUser(active))
   
 }
+
   const handleInputChange = (fieldName, value) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -74,6 +91,7 @@ const handlePress = () => {
     }));
     console.log(formData)
   };
+
   return (
     <View style={{backgroundColor:'#D8EAEF',height:'100%'}} >
     <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:50}} >
@@ -99,7 +117,10 @@ const handlePress = () => {
 
     <View>
         <Text style={{color:'silver',margin:15}} >  Cell Number</Text>
-    <TextInput    onChangeText={(value) => handleInputChange('phone', value)} style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:15,marginTop:5}} />
+    <TextInput 
+    keyboardType="numeric"
+    onChangeText={(value) => handleInputChange('phone', value)} style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:15,marginTop:5}} />
+
      <Text style={{margin:15,color:'silver',marginTop:5}} >*Must be a South African cell number.</Text>   
     </View>
 

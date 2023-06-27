@@ -4,12 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { rarrow } from '../../assets'
 import { useSelector } from 'react-redux'
 import { pfp } from '../../assets'
+import { useDispatch } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { currenthealthId } from '../../slices/allState'
 const Tab = createBottomTabNavigator()
 const HealthPracDashboard = ({navigation}) => {
    const healthid = useSelector((state) => state.loginSt.currentHealthPracAppointment) //change  this  doesnt have to do with login
-//      const setNameInAsyncStorage = async (name) => {
+   const healthLogged = useSelector((state) => state.loginSt.loggedInhealthPracName) //change  this  doesnt have to do with login
+  console.log(healthid,healthLogged)
+  const dispatch = useDispatch()
+   //      const setNameInAsyncStorage = async (name) => {
 //   try {
 //     await AsyncStorage.setItem('name', name);
 //     console.log('Name stored successfully!');
@@ -28,13 +33,13 @@ const HealthPracDashboard = ({navigation}) => {
   const asyncstore =async () => {
   
 try {
-  const userId = await AsyncStorage.getItem('healthId');
-
+  const healthId = await AsyncStorage.getItem('healthId');
+  console.log('HealthId stored successfully!',healthId);
   
-  if (userId !== null) {
-console.log('idididi',userId)
-  //  setCurrentUserId(userId);
+  if (healthId !== null) {
 
+  //  setCurrentUserId(userId);
+    dispatch(currenthealthId(healthId));
   //   dispatch(curruserId(userId))
     // Use the user ID for further processing or display
   } else {
@@ -49,8 +54,7 @@ console.log('idididi',userId)
 useEffect(()=>{
  asyncstore() 
 },[])
-   const home = 'homee'
-    const rando = 'random'
+
   return (
     <ImageBackground 
            source={require('../../assets/phone7.jpg')}
@@ -59,7 +63,7 @@ useEffect(()=>{
 <View style={{display:'flex',flexDirection:'row',marginTop:35,marginLeft:10}} >
 <Image source={pfp}  style={{width:50,height:50,borderRadius:25}} ></Image>
 
- <Text style={{marginLeft:5,fontSize:22,fontWeight:500,color:'white'}}  >Welcome Practitioner</Text>
+ <Text style={{marginLeft:5,fontSize:22,fontWeight:500,color:'white'}}  >Welcome, {healthLogged}</Text>
 </View>
 
         

@@ -1,22 +1,32 @@
-import { View, Text,StyleSheet,Dimensions,TextInput,Image, TouchableOpacity,Button,FlatList, ScrollView,ImageBackground,ImageBackgroundBase} from 'react-native'
+import { View, Text,StyleSheet,Dimensions,TextInput,Image, TouchableOpacity,Button,FlatList, ScrollView,ImageBackground,ImageBackgroundBase,Modal} from 'react-native'
 import React,{useState,useEffect} from 'react'
 import RNPickerSelect from 'react-native-picker-select';
 import { background } from '../../assets';
 import { background2 } from '../../assets';
 import IP_ADDRESS from '../ipadress'
 import { useSelector } from 'react-redux';
+import { StackActions } from '@react-navigation/native';
 import { usher } from '../../assets';
 import axios from 'axios';
 const ScheduleMaker = ({navigation}) => {
   const [isSchedule,isSetSchedule] = useState(false)
-// const schedule = useSelector(state => state.counter.scheduleState);
+  const [modal,setModal]=useState(false)
+  const [confirmed,setconfirmed]=useState(false)
+    const healthid = useSelector((state) => state.loginSt.healthId) //change  this  doesnt have to do with login
+  console.log(healthid,'here is the correctr id')
+
+    // const schedule = useSelector(state => state.counter.scheduleState);
   // const {schedule} = useSelector((state) => state.loginSt)
     const schedule = useSelector((state) => state.loginSt.schedule)
   useEffect(()=>{
-console.log('sched',schedule)
-if (schedule !==undefined || schedule!==null){
+console.log('sched',schedule.length)
+if (schedule !==undefined || schedule!==null ||schedule.length === 0 || schedule.length === undefined ) {
+ console.log('true')
+  isSetSchedule(false)
+}else{
   isSetSchedule(true)
 }
+
   },[schedule])
   // const handlePress = async()=>{
   //   try{
@@ -76,15 +86,16 @@ const handleSlotSelection = (day, slot) => {
 };
 
     const handleTimeSlots = async ()=>{
-    if (isSetSchedule){
+    if (isSchedule){
           try {
+            console.log('updating')
             let isTrue = true
             console.log(selectedSlots)
-    const response = await axios.post(`http://${IP_ADDRESS}/user`,{selectedSlots,isTrue});
+    const response = await axios.post(`http://${IP_ADDRESS}/user`,{selectedSlots,isTrue, healthid});
     //     // setHealthPrac(response.data)
     //   let theData = response.data
     // console.log('returned daya',theData);
-            navigation.navigate('HealthEntry')
+            // navigation.navigate('HealthEntry')
     // console.log('healthPrats',healthPrac)
   } catch (error) {
     // Handle any error that occurred during the request
@@ -98,8 +109,8 @@ const handleSlotSelection = (day, slot) => {
     }else{
        try {
         let isTrue = false
-
-    const response = await axios.post(`http://${IP_ADDRESS}/user`,{selectedSlots,isTrue});
+    console.log(healthid,'heal')
+    const response = await axios.post(`http://${IP_ADDRESS}/user`,{selectedSlots,isTrue, healthid});
         // setHealthPrac(response.data)
       let theData = response.data
     // console.log('returned daya',theData);
@@ -117,6 +128,20 @@ const handleSlotSelection = (day, slot) => {
     }
 
     }
+
+
+    const toggleModal = (state)=>{
+
+
+if (state==='confirm'){
+  
+handleTimeSlots()
+setconfirmed(true)
+}
+else{
+setModal(false)
+}
+}
     return (
 // w style={{marginLeft:10,marginTop:30}}
      <ImageBackground 
@@ -130,6 +155,64 @@ const handleSlotSelection = (day, slot) => {
         <View
         // style={{marginTop:80}}
         >
+
+          <Modal
+          visible={modal}
+          animationType="slide"
+    onRequestClose={toggleModal}
+          >
+
+<View style={{display:'flex',flex:1,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
+  {/* handleTimeSlots() */}
+
+
+
+     {!confirmed ? (
+ 
+ <>
+     <Text>Confirm Update</Text>
+ <View style={{display:'flex',flexDirection:'row',marginTop:5}} >
+
+
+  <TouchableOpacity  style={{ marginLeft: 10, backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 }} onPress={() => toggleModal('confirm')}>
+    <Text style={{ color: 'white', textAlign: 'center', color: 'white' }}>Confirm</Text>
+  </TouchableOpacity>
+    <TouchableOpacity style={{ marginLeft: 10, backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 }} onPress={() => toggleModal('false')}>
+    <Text style={{ color: 'white', textAlign: 'center' }}>Cancel</Text>
+  </TouchableOpacity>
+  </View>
+  </>
+) : (
+  <View style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+  <Text style={{fontSize:20}} >Schedule Updated</Text>
+    <TouchableOpacity style={{ display:'flex' , backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 ,marginTop:10}} onPress={() => {
+
+        setconfirmed(false)
+        setModal(false)
+      navigation.dispatch(StackActions.replace('HealthEntry'));
+
+      // Prevent going back to the previous screen
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'HealthEntry' }],
+      });
+    }}>
+    <Text style={{ color: 'white', textAlign: 'center' }}>Go Home</Text>
+  </TouchableOpacity>
+
+</View>
+  //    {/* <View style={{display:'flex',flexDirection:'row'}} >
+  // <TouchableOpacity style={{ marginLeft: 10, backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 }} onPress={() => toggleModal('confirm')}>
+  //   <Text style={{ color: 'white', textAlign: 'center', color: 'white' }}>Confirm</Text>
+  // </TouchableOpacity>
+  //   <TouchableOpacity style={{ marginLeft: 10, backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 }} onPress={() => toggleModal('false')}>
+  //   <Text style={{ color: 'white', textAlign: 'center' }}>Cancel</Text>
+  // </TouchableOpacity>
+  //    </View> */}
+)}
+</View>
+ 
+          </Modal>
   {/* <View style={{display:'flex',flexDirection:'row'}} >
  <Image source={usher}
    style={{resizeMode:'contain',width:100,height:50}}
@@ -182,7 +265,7 @@ const handleSlotSelection = (day, slot) => {
       ))} */}
 
 <View style={{alignItems:'center'}} >
-<TouchableOpacity style={{backgroundColor:'#1F3B5B',width:150,padding:10,borderRadius:8,alignItems:'center'}} onPress={()=>handleTimeSlots()} >
+<TouchableOpacity style={{backgroundColor:'#1F3B5B',width:150,padding:10,borderRadius:8,alignItems:'center'}} onPress={()=>setModal(true)} >
   <Text style={{color:'white'}}  > {isSchedule ? <Text>Update</Text>: <Text>Continue</Text>} </Text>
 </TouchableOpacity>
 </View>

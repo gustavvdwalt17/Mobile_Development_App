@@ -6,7 +6,7 @@ export const deleteAppointment = async (req,res)=>{
 // const id= req.params.id
 const data = req.body
 const appDate = null
-const {userid,healthpracID,note,canceledDate,name,id,useradd,appId, dateofAppointment} = data
+const {userid,healthpracID,note,canceledDate,name,id,useradd,appId, dateofAppointment,dop} = data
 console.log(userid,healthpracID,note,canceledDate,name,'id',id,appId, dateofAppointment,useradd)
 const query = `Delete from appointments where appointment_id = ${appId}`;
 
@@ -41,7 +41,7 @@ connection.query(query2, (error, results, fields) => {
   //   });
 
 }else if (useradd ==='yes'){
-const query2 = `INSERT into messages (user_id,HealthPracID,DateCancelled,useradd,userName) values (${userid},${healthpracID},'${canceledDate}', '${useradd}','${name}')`;
+const query2 = `INSERT into messages (user_id,HealthPracID,DateCancelled,useradd,userName,AppointmentDate) values (${userid},${healthpracID},'${canceledDate}', '${useradd}','${name}','${dop}')`;
 connection.query(query2, (error, results, fields) => {
   if (error) {
     console.error('Error inserting data:', error);
@@ -89,7 +89,7 @@ connection.query(query, (error, results, fields) => {
 
 export const getHealthPrac = async (req,res)=> {
   try{
-const id = '1'
+const id = req.params.id;
 const query = `Select * from appointments where HealthPracId=${id} `;
 
 connection.query(query, (error, results, fields) => {
@@ -116,10 +116,10 @@ connection.query(query, (error, results, fields) => {
     
 export const makeAppointment = async (req,res)=> {
 let exists = false
-const  {date,time,userid,healthpracID,name}=req.body
-console.log(date,time,userid,healthpracID)
-const query = `INSERT INTO appointments (user_id,healthpracID,time,day,healthpracname) VALUES (?,?,?,?,?)`;
-let values = [userid,healthpracID,time,date,name]
+const  {date,time,userid,healthpracID,name,patientName}=req.body
+console.log(date,time,userid,healthpracID,name,patientName,'yisisisisisisi')
+const query = `INSERT INTO appointments (user_id,healthpracID,time,day,healthpracname,patientname) VALUES (?,?,?,?,?,?)`;
+let values = [userid,healthpracID,time,date,name,patientName]
 connection.query(query,values, (error, results, fields) => {
   if (error) {
     console.error('Error inserting data:', error);

@@ -10,11 +10,11 @@ import { phone } from '../../assets'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import IP_ADDRESS from '../ipadress'
 import { addPracs, currHealthIdApp, curruserId, theHealthName } from '../../slices/allState'
-
+import { useSelector } from 'react-redux'
 // import { background } from '../../assets'
 // import { backgroundImg } from '../../assets'
 const UserDashBoard = ({navigation}) => {
-
+   const currUserName = useSelector((state) => state.loginSt.userName)
   
 
   const dispatch = useDispatch()
@@ -130,7 +130,7 @@ const handleNavApp = (id,name,surname) => {
     <View style={{display:'flex',flexDirection:'row',margin:30,marginTop:50}} >
 
       <Image source={pfp} style={{resizeMode:'contain',width:50,height:50,borderRadius:25}} />
-      <Text style={{fontSize:22,marginLeft:10,fontWeight:600,color:'white'}} >Welcome User</Text>
+      <Text style={{fontSize:22,marginLeft:10,fontWeight:600,color:'white'}} >Welcome, {currUserName}</Text>
     </View>
 
     <View >
@@ -183,13 +183,13 @@ const handleNavApp = (id,name,surname) => {
       <ScrollView
       showsHorizontalScrollIndicator={false}
       horizontal={true}>
-
+        {console.log(healthPrac,'every health')}
         { healthPrac !==[] && healthPrac.slice(0,3).map((item,index) => (
 
           
         <View style={{backgroundColor:'#CCCCCC',margin:10,padding:20,borderRadius:10}} key={index}>
           <View style={{display:'flex',flexDirection:'row'}} >
-        <Image source={pfp} style={{width:30,height:30}} />
+        <Image source={pfp} style={{width:30,height:30,borderRadius:15}} />
         <View style={{display:'flex',flexDirection:'row'}}>
             <Text style={{marginLeft:10,color:'black'}}>{item.Name}</Text>
             <Text style={{marginLeft:5,color:'black'}}>{item.Surname}</Text> 

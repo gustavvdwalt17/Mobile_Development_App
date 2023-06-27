@@ -90,18 +90,19 @@ export const loginUser = async (req, res) => {
           // Password does not match
           return res.status(400).json({ error: 'Invalid password' });
         }
-   
+        console.log(results[0])
+        const name = results[0].name
         const theId = results[0].user_id
         console.log('results',theId)
         console.log(results)
         // Password matches, login successful
         // You can generate a JWT token or set a session to authenticate the user
         // Here, we're sending a success message
-        res.status(200).json({ theId  });
+        res.status(200).json({ theId, name  });
       });
     });
  }else{
-    console.log('health')
+    console.log('health',email)
   const checkQuery = 'SELECT * FROM healthprac WHERE email = ?';
     connection.query(checkQuery, [email], (error, results) => {
       if (error) {
@@ -117,35 +118,37 @@ export const loginUser = async (req, res) => {
       console.log('2')
       // Email exists, compare the password
       const user = results[0];
-      // bcrypt.compare(password, user.password, (error, isMatch) => {
-      //   if (error) {
-      //     console.error('Error comparing passwords:', error);
-      //     return res.status(500).json({ error: 'Internal server error' });
-      //   }
-      // console.log('3')
-      //   if (!isMatch) {
-      //     // Password does not match
-      //     return res.status(400).json({ error: 'Invalid password' });
-      //   }
+      console.log(user,'user res')
+      bcrypt.compare(password, user.password, (error, isMatch) => {
+        if (error) {
+          console.error('Error comparing passwords:', error);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
    
-      //   const theId = results[0].HealthPracID
-      //   console.log('results',theId)
-      //   console.log(results)
-      //   // Password matches, login successful
-      //   // You can generate a JWT token or set a session to authenticate the user
-      //   // Here, we're sending a success message
-      //   res.status(200).json({ theId  });
-      // });
-      if (user.password === password){
-           const theId = results[0].HealthPracID
+        if (!isMatch) {
+          // Password does not match
+          return res.status(400).json({ error: 'Invalid password' });
+        }
+   
+        const theId = results[0].HealthPracID
+           const name = results[0].Name
    
         // Password matches, login successful
         // You can generate a JWT token or set a session to authenticate the user
         // Here, we're sending a success message
-        res.status(200).json({ theId  });
-      }else{
-          return res.status(400).json({ error: 'Invalid password' });
-      }
+       res.status(200).json({ theId ,name });
+      });
+    
+      // if (user.password === password){
+          
+    
+        // Password matches, login successful
+        // You can generate a JWT token or set a session to authenticate the user
+        // Here, we're sending a success message
+       
+      // }else{
+      //     return res.status(400).json({ error: 'Invalid password' });
+      // }
     });
 
  }

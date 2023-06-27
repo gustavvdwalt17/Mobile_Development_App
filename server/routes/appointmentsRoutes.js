@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.delete('/delete/:id',deleteAppointment)
 router.get('/getUser/:id',getUserAppointments)
-router.get('/getHealthPrac',getHealthPrac)
+router.get('/getHealthPrac/:id',getHealthPrac)
 router.post('/make',makeAppointment)
 
 // router.post('/create',auth,createPost)
