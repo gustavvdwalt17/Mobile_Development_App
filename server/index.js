@@ -7,7 +7,7 @@ import fileUpload from "express-fileupload";
 import fs from 'fs-extra';
 import appointmentRoutes from './routes/appointmentsRoutes.js'
 import loginRegisterRoutes from './routes/loginRegisterRoutes.js'
-
+import nodemailer from 'nodemailer';
 const app = express();
 import * as path from 'path';
 app.use(cors({origin: true, credentials: true}));
@@ -139,7 +139,7 @@ app.get('/fetchdocs/:userId', (req, res) => {
     return res.json({ documents: documentList });
   });
 });
-app.get('/fetchSchedule', (req, res) => {
+app.get('/fetchSchedule/:id', (req, res) => {
 //   connection.connect((error) => {
 //   if (error) {
 //     console.error('Error connecting to Amazon RDS:', error);
@@ -148,7 +148,8 @@ app.get('/fetchSchedule', (req, res) => {
 //   }
 // });
 
-  const id = '1'
+  const id = req.params.id;
+  console.log(id,'idididid')
 
   const query = `Select * from schedule where HealthPracID = ${id}`
 
@@ -293,7 +294,7 @@ connection.query(query, (err, results1) => {
 })
 
 
-app.get('/fetchPatients',(req,res)=>{
+app.get('/fetchPatients/:id',(req,res)=>{
 //     connection.connect((error) => {
 //   if (error) {
 //     console.error('Error connecting to Amazon RDS:', error);
@@ -301,7 +302,7 @@ app.get('/fetchPatients',(req,res)=>{
 //     console.log('Connected to Amazon RDS database.');
 //   }
 // });
-  const healthPracID = '1'
+  const healthPracID = req.params.id
   async function fetchData() {
     try {
     const query2 = `SELECT * FROM patients WHERE HealthPracID = '${healthPracID}'`;
@@ -421,9 +422,9 @@ app.get('/fetchPatients',(req,res)=>{
 
 app.post('/user', (req, res) => {
 
-const {selectedSlots,isTrue} = req.body;
+const {selectedSlots,isTrue,healthid} = req.body;
  if (isTrue) {
-const userId = 1;
+
 
 
 const days = Object.keys(selectedSlots);
@@ -434,7 +435,7 @@ console.log('Times:', times);
 
 const updateValues = times.map((time, index) => `${days[index]} = '${time}'`).join(', ');
 console.log('updated',updateValues)
-const query = `UPDATE schedule SET ${updateValues} WHERE HealthPracID = ${userId}`;
+const query = `UPDATE schedule SET ${updateValues} WHERE HealthPracID = ${healthid}`;
 
 connection.query(query, (error, results, fields) => {
   if (error) {
@@ -448,17 +449,21 @@ connection.query(query, (error, results, fields) => {
 // connection.end();
  }else{
   // get al users
-  const userId = 1;
+console.log(healthid,'the id')
   const arr=[]
 
   const data = req.body;
   // arr.push(data)
 
-const days = Object.keys(data);
-const times = Object.values(data);
+const days = Object.keys(selectedSlots);
+const times = Object.values(selectedSlots);
 
 console.log('Days:', days);
 console.log('Times:', times);
+const newTimes = times.flat()
+console.log('newTimes:', newTimes)
+const updateValues = times.join(', ');
+console.log('upadetd',updateValues)
 const columns = days.join(', ');
 const placeholders = times.map(() => '?').join(', ');
 
@@ -469,11 +474,30 @@ vals.push(times[i])
 }
 
 const serializedArrays = vals.map(arr => JSON.stringify(arr));
-console.log('serializedArrays:', serializedArrays,days,placeholders)
 
-const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${placeholders},1)`;
 
-connection.query(query1,serializedArrays, (error, results, fields) => {
+const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${placeholders},${healthid})`;
+
+
+// const query = `INSERT INTO schedule (${columnNames}, HealthPracID) VALUES ${values.join(', ')}`;
+
+// const placeholders = days.map((day, index) => {
+//   const dayValues = times[index];
+//   const dayPlaceholders = dayValues.map(() => '?').join(', ');
+//   return `(${dayPlaceholders})`;
+// }).join(', ');
+
+// const columns = days.join(', ');
+
+// const values = times.flat();
+
+// const query = `INSERT INTO schedule (${columns}) VALUES ${placeholders}`;
+
+// const values = times.map(times => `(${times.map(time => `'${time}'`).join(', ')})`).join(', ');
+
+// const query = `INSERT INTO schedule (${days.join(', ')}, HealthPracID) VALUES ${values}, '${healthid}'`;
+
+connection.query(query1,vals, (error, results, fields) => {
   if (error) {
     console.error('Error inserting data:', error);
   } else {
@@ -502,6 +526,79 @@ connection.query(query1,serializedArrays, (error, results, fields) => {
  }
 
 })
+app.post('/register', (req, res) => {
+  const { email } = req.body;
+
+  // Generate verification code or token (e.g., random alphanumeric string)
+  const verificationCode = generateVerificationCode();
+
+  // Save the verification code or token in your backend storage (e.g., database)
+
+  // Send verification email
+  sendVerificationEmail(email, verificationCode)
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((error) => {
+      console.error('Error sending verification email:', error);
+      res.json({ success: false });
+    });
+});
+
+// Endpoint to handle verification
+app.post('/verify', (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  // Retrieve the saved verification code from your backend storage
+
+  // Compare the provided verification code with the stored one
+  if (verificationCode === verificationCode) {
+    // Mark the email as verified in your backend (e.g., update database)
+
+    res.json({ success: true });
+  } else {
+    res.json({ success: false });
+  }
+});
+
+// Function to send verification email using Nodemailer
+const sendVerificationEmail = (email, verificationCode) => {
+  return new Promise((resolve, reject) => {
+    const transporter = nodemailer.createTransport({
+      // Configure your email service provider details here (e.g., Gmail SMTP)
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'goosyvdwalt@gmail.com',
+        pass: 'd3Gl77#@!1-',
+      },
+    });
+
+    const mailOptions = {
+      from: 'your-email@example.com',
+      to: email,
+      subject: 'Email Verification',
+      text: `Your verification code: ${verificationCode}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending verification email:', error);
+        reject(error);
+      } else {
+        console.log('Verification email sent:', info.response);
+        resolve();
+      }
+    });
+  });
+};
+
+// Helper function to generate verification code
+const generateVerificationCode = () => {
+  // Generate a random alphanumeric string or any other method you prefer
+  return 'ABC123';
+};
 
 app.listen(3001,()=>console.log(`Listening on port ${3001}`))
 

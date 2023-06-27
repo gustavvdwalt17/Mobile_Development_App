@@ -4,13 +4,17 @@ import axios from 'axios'
 import IP_ADDRESS from '../ipadress'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { trash } from '../../assets'
+import { useSelector } from 'react-redux'
 const UpcomingAppointmentsHealthPrac = ({navigation}) => {
     const [modal,setModal]=useState(false)
     const [healthName,setHealthName]=useState(null)
     const [healthid,setHealthid]=useState(null)
       const [inputValue, setInputValue] = useState('');
     const [healthPracSchedule,setHealthPracSchedule] = useState(null)
+    const [userIdToDelete,setUserIdtoDelete] = useState(null)
     const [appointmentId,setAppointmentId]=useState(null)
+      const healthLogged = useSelector((state) => state.loginSt.loggedInhealthPracName) //change  this  doesnt have to do with login
+      const healthLoggedId = useSelector((state) => state.loginSt.healthId) //change  this  doesnt have to do with login
   const handleInputChange = (text) => {
     setInputValue(text);
     console.log(inputValue);
@@ -18,7 +22,7 @@ const UpcomingAppointmentsHealthPrac = ({navigation}) => {
     const handlegetAppointments = async () => {
  try {
 
-    const response = await axios.get(`http://${IP_ADDRESS}/appointments/getHealthPrac`);
+    const response = await axios.get(`http://${IP_ADDRESS}/appointments/getHealthPrac/${healthLoggedId}`);
    
     console.log('deta',response.data)
     setHealthPracSchedule(response.data)
@@ -86,12 +90,13 @@ const UpcomingAppointmentsHealthPrac = ({navigation}) => {
   }
 
 if (state ==='confirm'){
- 
+  console.log(healthLoggedId,healthName,healthLogged)
+ console.log(userIdToDelete,'deleting')
      try {
   
 
           let data ={
- userid:1,healthpracID:'5',note:inputValue,canceledDate:new Date(),name:healthName,id:healthid,useradd:'no',appId:appointmentId,
+ userid:userIdToDelete,healthpracID:healthLoggedId,note:inputValue,canceledDate:new Date(),name:healthLogged,id:healthid,useradd:'no',appId:appointmentId,
  dateofAppointment:healthPracSchedule[0].day
   }
 
@@ -123,10 +128,11 @@ if (state ==='confirm'){
     style={styles.backgroundImage}
   >
     <View style={{marginTop:30,marginLeft:5}}>
-<Text style={{fontSize:22,fontWeight:500,color:'white',marginLeft:5}} >Your Appointments</Text>
+<Text style={{fontSize:22,fontWeight:500,color:'white',marginLeft:5}} >Upcoming Appointments for, {healthLogged}</Text>
      {healthPracSchedule?.map((item,index)=>{
-        {console.log(healthPracSchedule,'shcule')}
-        const {day,time,patientname,healthpracname} = item
+       
+        const {day,time,patientname,healthpracname,user_id} = item
+       {console.log(user_id)}
         return (
             <View key={index} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'#CCCCCC',marginTop:10,width:300,padding:10,borderRadius:10,marginLeft:5}}>
                 <View>
@@ -138,8 +144,10 @@ if (state ==='confirm'){
          
                 <TouchableOpacity onPress={()=>{
                     setModal(true)
-                    setAppointmentId(item.appointment_id)}}
-                    
+                    setAppointmentId(item.appointment_id)
+                        setUserIdtoDelete(user_id)
+                  }}
+              
                     >
 <Image style={{width:30,height:30,marginTop:25,borderRadius:15}} source={trash} />
 

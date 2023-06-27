@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { StackActions } from '@react-navigation/native';
-import loginState, { changeLoginState, changeRegiserState, currHealthIdApp, curruserId, registerState } from '../slices/allState'
+import loginState, { changeLoginState, changeRegiserState, currHealthIdApp, curruserId, registerState, theHealthNamelogged, theUserName } from '../slices/allState'
 import IP_ADDRESS from './ipadress'
 const LoginRegister = ({navigation}) => {
 
@@ -34,6 +34,7 @@ const handlePress = async () =>{
     // Handle the response from the server
 
   console.log('success',response.data.theId)
+  console.log('success',response.data.name)
 
     try {
     await AsyncStorage.setItem('user_id',response.data.theId.toString());
@@ -41,6 +42,9 @@ const handlePress = async () =>{
   } catch (error) {
     console.log('Error storing data: ', error);
   }
+
+
+    dispatch(theUserName(response.data.name))
 
 
      navigation.navigate('User')
@@ -76,7 +80,7 @@ if (error.response && error.response.data && error.response.data.error) {
     console.log('Error storing data: ', error);
   }
 
-
+  dispatch(theHealthNamelogged(response.data.name))
 
      navigation.navigate('HealthEntry')
 
@@ -235,7 +239,7 @@ const styles = StyleSheet.create({
   position:'relative'
  },
  blue:{
-  borderBottomColor:'blue',
+  borderBottomColor:'#26389E',
   fontSize:20,
 
   borderBottomWidth:2,

@@ -30,7 +30,9 @@ import HealthPracEntry from './screens/HealthPracScreens/HealthPracEntry';
 import Messages from './screens/UserScreens/Messages';
 import UpcomingAppointmentsHealthPrac from './screens/HealthPracScreens/UpcomingAppointmentsHealthPrac';
 import HealthPracMessages from './screens/HealthPracScreens/HealthPracMessages';
-
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 const Stack = createNativeStackNavigator()
 export default  App = ({navigation})=> {
   const [istrue,setIsTrue] = useState(false)
@@ -105,25 +107,36 @@ console.log(istrue)
       component={Scanner}
       
       /> */}
-
-                            <Stack.Screen 
+                                <Stack.Screen 
       name="Join"
       component={JoinScreen}
       
       />
-
-                                                           <Stack.Screen 
-      name="User"
-      component={UserScreen}
       
-      />  
-
 
                                                            <Stack.Screen 
       name="HealthEntry"
       component={HealthPracEntry}
       
       /> 
+
+
+                                                                 <Stack.Screen 
+      name="User"
+      component={UserScreen}
+      
+      />  
+
+
+  
+
+{/* 
+
+                                                           <Stack.Screen 
+      name="HealthEntry"
+      component={HealthPracEntry}
+      
+      />  */}
 
                                                                     <Stack.Screen 
       name="HealthPracDash"

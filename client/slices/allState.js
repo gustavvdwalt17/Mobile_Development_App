@@ -9,7 +9,11 @@ let  initialState= {
     registerData:null,
     currentHealthPracAppointment:1,
     currentUserId:null,
-    healthPracName:null
+    healthPracName:null,
+    userName:null,
+    loggedInhealthPracName:null,
+    healthId:null,
+    dataObjInfo:null
   }
 
 export const counterSlice = createSlice({
@@ -70,6 +74,26 @@ console.log(action.payload,'paylodaaa')
 // state.allPracs.push(action.payload)
 state.healthPracName= action.payload
   },
+  theUserName: (state, action) => {
+
+// state.allPracs.push(action.payload)
+state.userName= action.payload
+  },
+  theHealthNamelogged: (state, action) => {
+
+// state.allPracs.push(action.payload)
+state.loggedInhealthPracName= action.payload
+  },
+  currenthealthId: (state, action) => {
+console.log('settintheidinslce',action.payload)
+// state.allPracs.push(action.payload)
+state.healthId= action.payload
+  },
+  dataBlock: (state, action) => {
+
+// state.allPracs.push(action.payload)
+state.dataObjInfo = action.payload
+  },
 
   },
 })
@@ -85,14 +109,21 @@ export const {dataForRegister} = counterSlice.actions
 export const {currHealthIdApp} = counterSlice.actions
 export const {curruserId} = counterSlice.actions
 export const {theHealthName} = counterSlice.actions
-export const isUserState = (state) => state.counter.isUser
-export const scheduleState = (state) => state.counter.schedule
-export const pracsState = (state) => state.counter.allPracs
-export const patientID = (state) => state.counter.patientId
-export const registerdata = (state) => state.counter.registerData
-export const dahealthId = (state) => state.counter.currentHealthPracAppointment
-export const theCurrentUserId = (state) => state.counter.currentUserId
-export const selectHealthname = (state) => state.counter.healthPracName
+export const {theUserName} = counterSlice.actions
+export const {theHealthNamelogged} = counterSlice.actions
+export const { currenthealthId} = counterSlice.actions
+export const {dataBlock} = counterSlice.actions
+
+// export const isUserState = (state) => state.counter.isUser
+// export const scheduleState = (state) => state.counter.schedule
+// export const pracsState = (state) => state.counter.allPracs
+// export const patientID = (state) => state.counter.patientId
+// export const registerdata = (state) => state.counter.registerData
+// export const dahealthId = (state) => state.counter.currentHealthPracAppointment
+// export const theCurrentUserId = (state) => state.counter.currentUserId
+// export const selectHealthname = (state) => state.counter.healthPracName
+// export const selectUsername = (state) => state.counter.userName
+// export const theHealthnameloggedIn = (state) => state.counter.loggedInhealthPracName
 // export const loginState = (state) => state.counter.login
 // export const registerState = (state) => state.counter.login
 export default counterSlice.reducer

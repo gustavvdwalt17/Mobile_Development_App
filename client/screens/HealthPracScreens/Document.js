@@ -6,9 +6,12 @@ import axios from 'axios';
 import { pfp } from '../../assets';
 import IP_ADDRESS from '../ipadress'
 import { Linking } from 'react-native';
+import { pngg } from '../../assets';
+import { daNewDoc } from '../../assets';
 import { useSelector } from 'react-redux';
 const Document = () => {
       const patientId = useSelector((state) => state.loginSt.patientId)
+      const dataInformation = useSelector((state) => state.loginSt.dataObjInfo)
   const [rep,setRep] = useState(null)
    const [files, setFiles] = useState([]);
 
@@ -95,24 +98,43 @@ style={{backgroundColor:'#1F3B5B',marginTop:40,marginLeft:10,width:300,borderRad
 > 
 
          
-         <View>
+         <View style={{display:'flex',flexDirection:'row'}}  >
           <Image source={pfp} style={{height:50,width:50,borderRadius:25}} ></Image>
+       
+         <View style={{display:'flex',flexDirection:'column',marginLeft:10}} >
+     <Text style={{color:'white'}} >Patient: {dataInformation.name}</Text>
+            <Text  style={{color:'white'}}>Email: {dataInformation.email}</Text>
+            <Text  style={{color:'white'}}>DOB: {dataInformation.dob.split('T')[0]}</Text>
          </View>
-            <Text style={{color:'white'}} >Patient: Piet Pompies</Text>
-            <Text  style={{color:'white'}}>Number: 029 128 3821</Text>
+         </View>
         </View>
       <Text style={{marginLeft:10,marginBottom:10,color:'white',marginTop:10,fontSize:22}}>User Documents:</Text>
     
    
       { files.length!==0 ? files?.map((filename, index) => (
-        <>
-     <View key={filename} style={{marginLeft:10,marginTop:15}}>
-     <Image style={{resizeMode:'contain',width:50,height:50,borderRadius:25}} source={pdf} ></Image>
+        <View key={filename} >
+     <View  style={{marginLeft:10,marginTop:15}}>
+     <Image style={{resizeMode:'contain',width:60,height:60,borderRadius:5}} source={
+
+      filename.split('.')[1] === 'jpeg'
+  ? pngg
+  
+  : filename.split('.')[1] === 'png'
+  ?  pngg
+  : filename.split('.')[1] === 'pdf'
+  ? pdf
+  :      filename.split('.')[1] === 'jpg'
+  ? pngg
+  : daNewDoc
+     }
+      ></Image>
         <TouchableOpacity key={index} onPress={() => handleDownload(filename)}>
+
+          
           <Text style={{color:'white'}} >{filename}</Text>
         </TouchableOpacity>
       </View>
-      </>
+      </View>
        )):(
        <View>
 <Text style={{marginLeft:10,color:'white'}} >User has no files or documents uploaded.</Text>
