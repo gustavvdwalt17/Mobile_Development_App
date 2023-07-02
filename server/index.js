@@ -5,11 +5,18 @@ import multer from "multer";
 import mysql from 'mysql';
 import fileUpload from "express-fileupload";
 import fs from 'fs-extra';
+
 import appointmentRoutes from './routes/appointmentsRoutes.js'
 import loginRegisterRoutes from './routes/loginRegisterRoutes.js'
 import nodemailer from 'nodemailer';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 const app = express();
 import * as path from 'path';
+import { promisify } from 'util';
+
+import { rename as renameAsync } from 'fs/promises';
 app.use(cors({origin: true, credentials: true}));
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
@@ -96,26 +103,78 @@ const fileName = `${userId}-${original}`
   },
 });
 
+
+
+
 const upload = multer({ storage: storage });
 
-app.post('/upload',upload.single('document') ,(req, res) => {
 
-  const userId = req.body.userId
-  const uploadedFile = req.file;
-  const newFilename = userId + '_'+ Date.now() + '_' + uploadedFile.originalname; //make file unique
-  const newFilePath = './uploads/'+newFilename;
 
-   fs.rename(uploadedFile.path, newFilePath, function(err) {
-    if (err) {                                                                 //rename doc to more unique  name
-      // Handle the error
-      console.error('Error renaming file:', err);
-      res.status(500).json({ error: 'Failed to rename file' });
+app.post('/upload', upload.single('document'), async (req, res) => {
+  console.log('backend upload');
+
+  try {
+    const userId = req.body.userId;
+    const uploadedFile = req.file;
+    console.log(uploadedFile, 'da file');
+
+    const newFilename = userId + '_' + Date.now() + '_' + uploadedFile.originalname;
+    const newFilePath = './uploads/' + newFilename;
+
+    await renameAsync(uploadedFile.path, newFilePath);
+    console.log('File renamed successfully');
+
+    return res.json({ message: 'File uploaded and renamed successfully' });
+  } catch (error) {
+    console.error('Error renaming file:', error);
+    res.status(500).json({ error: 'Failed to rename file' });
+  }
+});
+
+app.delete('/filesDelete/:name',(req,res)=>{
+  const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+ const fileName = req.params.name
+  const directory = path.join(__dirname, 'uploads');
+const filename = fileName ; // Provide the filename to delete
+
+const filePath = path.join(directory, filename);
+
+// Check if the file exists
+if (fs.existsSync(filePath)) {
+  // Delete the file
+  fs.unlink(filePath, (error) => {
+    if (error) {
+          return res.json({ message: 'Error deleting file:' });
+      // console.error('Error deleting file:', error);
     } else {
-      // File renamed successfully
-   return res.json({ message: 'File uploaded and renamed successfully' });
+        return res.json({ message: 'File deleted successfully' });
+ 
     }
   });
-});
+} else {
+  console.log('File not found');
+}
+})
+// app.post('/upload',upload.single('document') ,(req, res) => {
+//   console.log('backend uploadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+//   const userId = req.body.userId
+//   const uploadedFile = req.file;
+//   console.log(uploadedFile,'da fileeeeeeeeeeeeee')
+//   const newFilename = userId + '_'+ Date.now() + '_' + uploadedFile.originalname; //make file unique
+//   const newFilePath = './uploads/'+newFilename;
+
+//    fs.rename(uploadedFile.path, newFilePath, function(err) {
+//     if (err) {                                                                 //rename doc to more unique  name
+//       // Handle the error
+//       console.error('Error renaming file:', err);
+//       res.status(500).json({ error: 'Failed to rename file' });
+//     } else {
+//       // File renamed successfully
+//    return res.json({ message: 'File uploaded and renamed successfully' });
+//     }
+//   });
+// });
 
 app.get('/fetchdocs/:userId', (req, res) => {
   const userId = req.params.userId;
@@ -421,8 +480,8 @@ app.get('/fetchPatients/:id',(req,res)=>{
 
 
 app.post('/user', (req, res) => {
-
 const {selectedSlots,isTrue,healthid} = req.body;
+console.log(isTrue)
  if (isTrue) {
 
 
@@ -465,19 +524,91 @@ console.log('newTimes:', newTimes)
 const updateValues = times.join(', ');
 console.log('upadetd',updateValues)
 const columns = days.join(', ');
-const placeholders = times.map(() => '?').join(', ');
+let insertColumns = '';
+let insertValues = '';
 
-const vals=[]
-for (let i = 0; i < times.length; i++) {
+// for (let i = 0; i < days.length; i++) {
+//   const day = days[i];
+//   const dayTimes = Array.isArray(times[i]) ? times[i] : [times[i]];
 
-vals.push(times[i])
-}
+//   for (const time of dayTimes) {
+//     insertColumns += `${day}, `;
+//     insertValues += `'${time}', `;
+//   }
+// }
 
-const serializedArrays = vals.map(arr => JSON.stringify(arr));
+// insertColumns = insertColumns.slice(0, -2); // Remove the trailing comma and space
+// insertValues = insertValues.slice(0, -2); // Remove the trailing comma and space
+// const query3 = `INSERT INTO schedule (${insertColumns}, HealthPracID) VALUES (${insertValues}, ${healthid})`;
+
+// const placeholders = times.map(() => '?').join(', ');
+
+// const vals=[]
+// for (let i = 0; i < times.length; i++) {
+
+// vals.push(times[i])
+// console.log(times[i],'times at i')
+// }
+
+// console.log(vals,'valss')
+// const serializedArrays = vals.map(arr => JSON.stringify(arr));
 
 
-const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${placeholders},${healthid})`;
+// const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${vals},${healthid})`;
 
+
+// connection.query(insertQuery, (error, results, fields) => {
+//   if (error) throw error;
+
+//   // Handle the insertion result if needed
+//   console.log('Insertion successful');
+// });
+
+const values = days.map((day, index) => {
+  const time = times[index] ? `('${times[index].join(',')}')` : 'NULL';
+  return time;
+});
+
+const query = `INSERT INTO schedule (${days.join(', ')},HealthpracID) VALUES (${values.join(', ')}, ${healthid})`;
+
+console.log('wueruwer',query)
+connection.query(query, (error, results, fields) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('Successfully inserted data');
+  }
+});
+
+//231444444444
+// const values = [];
+// for (let i = 0; i < days.length; i++) {
+//   const day = days[i];
+//   const time = times[i] ? JSON.stringify(times[i]) : null;
+//   values.push(time);
+// }
+
+// const query = `INSERT INTO schedule (${days.join(', ')}, HealthpracID) VALUES (${values.map(val => val ? `'${val}'` : 'NULL').join(', ')}, ${healthid})`;
+// console.log(query,'da queryyyyyyyy')
+// connection.query(query, (error, results, fields) => {
+//   if (error) {
+//     console.error(error);
+//   } else {
+//     console.log('Successfully inserted data');
+//   }
+// });
+
+// const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${placeholders},${healthid})`;
+
+
+// const values = days.map((day, index) => {
+//   const time = Array.isArray(times[index]) ? times[index].join(', ') : times[index];
+//   return `('${time}')`;
+// });
+
+// const healthId = 1; // Assuming you have the healthid value
+
+// const query = `INSERT INTO schedule (${days.join(',')}, HealthPracID) VALUES ${values.join(', ')}, ${healthId}`;
 
 // const query = `INSERT INTO schedule (${columnNames}, HealthPracID) VALUES ${values.join(', ')}`;
 
@@ -497,13 +628,8 @@ const query1 = `INSERT INTO schedule (${days},HealthPracID) VALUES (${placeholde
 
 // const query = `INSERT INTO schedule (${days.join(', ')}, HealthPracID) VALUES ${values}, '${healthid}'`;
 
-connection.query(query1,vals, (error, results, fields) => {
-  if (error) {
-    console.error('Error inserting data:', error);
-  } else {
-    console.log('Data inserted successfully:', results);
-  }
-})
+
+
 // connection.end()
 
 // Close the database connection

@@ -5,7 +5,7 @@ import { trash } from '../../assets'
 import IP_ADDRESS from '../ipadress'
 import { pfp } from '../../assets'
 import { useSelector } from 'react-redux'
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const UpcomingAppointments = ({navigation}) => {
     const curruserid = useSelector((state) => state.loginSt.currentUserId)
     const healthid = useSelector((state) => state.loginSt.currentHealthPracAppointment)
@@ -113,33 +113,76 @@ visible={modal}
 
         <View style={{display:'flex',flexDirection:'row',marginTop:30,marginLeft:10}} >
             <Image style={{resizeMode:'contain',width:60,height:60,borderRadius:30}} source={pfp} ></Image>
-            <Text style={{color:'white',fontSize:18,marginLeft:5,width:300}} >Upcoming Appointments for {currUserName}.</Text>
+          
+          
+     
+    <Text style={{color:'white',fontSize:18,marginLeft:5,width:250}} >Upcoming Appointments for {currUserName}.</Text>
+      
+        
         </View>
         <View style={{width:330,borderRadius:10,margin:10}} >
           {console.log('Appointments',appointments)}
-    {appointments?.map((item,index)=>{
-        return (
-            <View key={index} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',marginTop:10,backgroundColor:'white',borderRadius:10}}>
-            <View style={{padding:10}}>
-                     <Text style={{color:'black'}}>HealthPractitioner: {item.healthpracname}</Text>
-                <Text style={{color:'black'}}>Date: {item.day}</Text>
-                <Text style={{color:'black'}}>Time: {item.time}</Text>
-
-            </View>
-            <TouchableOpacity style={{width:50,height:50,borderRadius:8,marginTop:15,marginRight:5}} onPress={()=>{
-              
-              setModal(true)
-                sethealthPracId(item.HealthPracID) 
-            setAppointmentId(item.appointment_id)
-            setDateOfApp(item.day)
-            }} >
-                <Image 
-                style={{resizeMode:'contain',width:50,height:50,borderRadius:50}}
-                source={trash}></Image>
-            </TouchableOpacity>
+{appointments && appointments.length > 0 ? (
+  appointments.map((item, index) => {
+    return (
+      <View
+        key={index}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 10,
+          backgroundColor: 'white',
+          borderRadius: 10,
+        }}
+      >
+        <View style={{ padding: 10 }}>
+          <Text style={{ color: 'black' }}>
+            HealthPractitioner: {item.healthpracname}
+          </Text>
+          <Text style={{ color: 'black' }}>Date: {item.day}</Text>
+          <Text style={{ color: 'black' }}>Time: {item.time}</Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 8,
+            marginTop: 15,
+            marginRight: 5,
+          }}
+          onPress={() => {
+            setModal(true);
+            sethealthPracId(item.HealthPracID);
+            setAppointmentId(item.appointment_id);
+            setDateOfApp(item.day);
+          }}
+        >
+          <Image
+            style={{
+              resizeMode: 'contain',
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+            }}
+            source={trash}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+    );
+  })
+) : (
+  <>
+  <Text style={{ color: 'white' ,fontSize:22 }}>No appointments</Text>
+<View style={{ display: 'flex', flexDirection: 'row' }}>
+  <TouchableOpacity onPress={() => navigation.navigate('User')} style={{ flexDirection: 'row', alignItems: 'center' , marginTop:10 ,backgroundColor:'#CCCCCC',borderRadius:10 , padding:5 }}>
+    <Text style={{ color: 'black' }}>Book an Appointment</Text>
+    <Ionicons name="arrow-forward" size={22} color="black" />
+  </TouchableOpacity>
 </View>
-        )
-    })}
+
+  </>
+)}
     
     </View>
 

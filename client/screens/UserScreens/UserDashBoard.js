@@ -110,6 +110,7 @@ const handleNavApp = (id,name,surname) => {
 
   let newname = name + " " + surname
   console.log(newname)
+  console.log('id dispatches',id)
   dispatch(currHealthIdApp(id))
   dispatch(theHealthName(newname))
   navigation.navigate('appointment')

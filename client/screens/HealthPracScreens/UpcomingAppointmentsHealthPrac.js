@@ -128,34 +128,48 @@ if (state ==='confirm'){
     style={styles.backgroundImage}
   >
     <View style={{marginTop:30,marginLeft:5}}>
-<Text style={{fontSize:22,fontWeight:500,color:'white',marginLeft:5}} >Upcoming Appointments for, {healthLogged}</Text>
-     {healthPracSchedule?.map((item,index)=>{
-       
-        const {day,time,patientname,healthpracname,user_id} = item
-       {console.log(user_id)}
-        return (
-            <View key={index} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'#CCCCCC',marginTop:10,width:300,padding:10,borderRadius:10,marginLeft:5}}>
-                <View>
-            <Text style={{fontSize:14,fontWeight:500}} >{healthpracname}</Text>
-                <Text>Patient Name: {patientname}</Text>
-                <Text>Day: {day}</Text>
-                <Text>Time: {time}</Text>         
-                </View>
-         
-                <TouchableOpacity onPress={()=>{
-                    setModal(true)
-                    setAppointmentId(item.appointment_id)
-                        setUserIdtoDelete(user_id)
-                  }}
-              
-                    >
-<Image style={{width:30,height:30,marginTop:25,borderRadius:15}} source={trash} />
+<Text style={{fontSize:22,fontWeight:500,color:'white',marginLeft:5}} >Upcoming Appointments for, {healthLogged}.</Text>
+{healthPracSchedule && healthPracSchedule.length > 0 ? (
+  healthPracSchedule.map((item, index) => {
+    const { day, time, patientname, healthpracname, user_id } = item;
+    console.log(user_id);
+    return (
+      <View
+        key={index}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#CCCCCC',
+          marginTop: 10,
+          width: 300,
+          padding: 10,
+          borderRadius: 10,
+          marginLeft: 5,
+        }}
+      >
+        <View>
+          <Text style={{ fontSize: 14, fontWeight: 500 }}>{healthpracname}</Text>
+          <Text>Patient Name: {patientname}</Text>
+          <Text>Day: {day}</Text>
+          <Text>Time: {time}</Text>
+        </View>
 
-                    </TouchableOpacity>
-           
-            </View>
-        )
-     })}
+        <TouchableOpacity
+          onPress={() => {
+            setModal(true);
+            setAppointmentId(item.appointment_id);
+            setUserIdtoDelete(user_id);
+          }}
+        >
+          <Image style={{ width: 30, height: 30, marginTop: 25, borderRadius: 15 }} source={trash} />
+        </TouchableOpacity>
+      </View>
+    );
+  })
+) : (
+  <Text style={{color:'white',marginLeft:5,marginTop:10,fontSize:22}} >No upcoming appointments</Text>
+)}
  <Modal
 visible={modal}
  animationType="slide"

@@ -45,7 +45,7 @@ const UserScreen = () => {
             // } 
             else if (rn === rando) {
                 console.log('rando')
-              iconName = focused ? 'settings' : 'chatbox-ellipses-outline';
+              iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
             }
                  else if (rn === user) {
                 console.log('rando')

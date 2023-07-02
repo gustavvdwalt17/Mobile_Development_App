@@ -18,10 +18,15 @@ const ScheduleMaker = ({navigation}) => {
     // const schedule = useSelector(state => state.counter.scheduleState);
   // const {schedule} = useSelector((state) => state.loginSt)
     const schedule = useSelector((state) => state.loginSt.schedule)
+
+
   useEffect(()=>{
 console.log('sched',schedule.length)
-if (schedule !==undefined || schedule!==null ||schedule.length === 0 || schedule.length === undefined ) {
- console.log('true')
+    console.log(schedule,'your sched')
+    const isEmpty = Object.keys(schedule).length === 0;
+    console.log('sched',isEmpty)
+if (isEmpty) {
+ 
   isSetSchedule(false)
 }else{
   isSetSchedule(true)
@@ -47,14 +52,17 @@ console.log(selectedSlots,'slotss')
 //   }
 //  setSelectedSlots({...selectedSlots,arr})
 const timeSlots = {
-    slot1: '8:00-9:00',
-    
-  slot2: '10:00-11:00',
-  slot3: '11:00-12:00',
-  slot4: '12:00-13:00',
-  // Add more slots as needed
+  slot1: '8:00-9:00',
+  slot2: '9:00-10:00',
+  slot3: '10:00-11:00',
+  slot4: '11:00-12:00',
+  slot5: '12:00-13:00',
+  slot6: '13:00-14:00',
+  slot7: '14:00-15:00',
+  slot8: '15:00-16:00',
+  slot9: '16:00-17:00',
+  slot10: '17:00-18:00'
 };
-
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   // Function to handle slot selection
@@ -184,7 +192,7 @@ setModal(false)
   </>
 ) : (
   <View style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-  <Text style={{fontSize:20}} >Schedule Updated</Text>
+  <Text style={{fontSize:20}} >Schedule Updated!</Text>
     <TouchableOpacity style={{ display:'flex' , backgroundColor: 'black', padding: 10, borderRadius: 5, width: 100 ,marginTop:10}} onPress={() => {
 
         setconfirmed(false)

@@ -3,6 +3,7 @@ import React,{useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import { Alert } from 'react-native'
 import { useDispatch } from 'react-redux'
+import Icon from 'react-native-vector-icons/Ionicons';
 import { dataForRegister } from '../../slices/allState'
 const RegsterSc2 = ({navigation}) => {
     const dispatch = useDispatch()
@@ -11,6 +12,7 @@ const RegsterSc2 = ({navigation}) => {
         const {isUser} = useSelector((state)=> state.loginSt)
           const registerData = useSelector((state) => state.loginSt.registerData)
             const [formData,setFormData] = useState(null)
+            const [showPasswords,setShowPasswords] = useState(false)
    useEffect(()=>{
   setFormData(registerData)
    },[registerData])
@@ -87,18 +89,40 @@ const handleAlerts = (msg) => {
         <Text>All your information will be securely stored. We will not share your information with people outside our company.</Text>
     </View>
 
-    <View>
+ 
     
         <Text style={{color:'silver',margin:10,marginTop:2}} >  Email</Text>
     <TextInput onChangeText={(value)=> handleInputChange('email',value)} style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
-   
-        <Text style={{color:'silver',margin:10,marginTop:2}} > Password</Text>
-    <TextInput onChangeText={(value)=> handleInputChange('password',value)}  style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:2,marginTop:5}} />
-   
+
+
+
+<View style={{ position: 'relative' }}>
+
+    <Text style={{ color: 'silver', margin: 10, marginTop: 2 }}>Password</Text>
+
+    <TextInput secureTextEntry={showPasswords} onChangeText={(value) => handleInputChange('password', value)} style={{ backgroundColor: 'white', width: 250, height: 50, borderRadius: 10, margin: 10, marginTop: 2, marginTop: 5 }} />
+
+
+
+  <TouchableOpacity style={{ position: 'absolute', right: 80, top: 55, marginRight: 25 }} onPress={() => setShowPasswords(!showPasswords)}>
+    <Icon name={showPasswords ? 'eye-off-outline' : 'eye-outline'} size={20} />
+  </TouchableOpacity>
+
+
+
+</View>
+    
+    
+    <View style={{ position: 'relative' }}>
         <Text style={{color:'silver',margin:10,marginTop:2}} >  Confirm Password</Text>
-    <TextInput onChangeText={(value)=> handleInputChange('confirmPassword',value)}  style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:5}} />
-   
+    <TextInput secureTextEntry={showPasswords} onChangeText={(value)=> handleInputChange('confirmPassword',value)}  style={{backgroundColor:'white',width:250,height:50,borderRadius:10,margin:10,marginTop:5}} />
+       
+    <TouchableOpacity style={{ position: 'absolute', right: 80, top: 55, marginRight: 25 }}onPress={()=>setShowPasswords(!showPasswords)} >
+    <Icon name={showPasswords ? 'eye-off-outline' : 'eye-outline'} size={20} />
+    </TouchableOpacity>
+
     </View>
+
 
 <View style={{display:'flex',alignItems:'center',marginTop:50}} >
     <TouchableOpacity  onPress={()=>handleNav()} style={{backgroundColor:'#375169',width:150,height:50,borderRadius:20}} > 

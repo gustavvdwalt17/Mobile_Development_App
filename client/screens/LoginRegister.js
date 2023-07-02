@@ -8,13 +8,14 @@ import axios from 'axios'
 import { StackActions } from '@react-navigation/native';
 import loginState, { changeLoginState, changeRegiserState, currHealthIdApp, curruserId, registerState, theHealthNamelogged, theUserName } from '../slices/allState'
 import IP_ADDRESS from './ipadress'
+import Icon from 'react-native-vector-icons/Ionicons';
 const LoginRegister = ({navigation}) => {
 
  const curruserid = useSelector((state) => state.loginSt.currentUserId)
 const [active,setActive]=useState('user')
 const [loginValues,setLoginValues]=useState({email:'',password:''})
   const healthid = useSelector((state) => state.loginSt.currentHealthPracAppointment)
-
+  const [showPasswords,setShowPassword]=useState(false)
   // const {login} = useSelector((state) => state.loginSt)
 const dispatch = useDispatch()
 
@@ -163,7 +164,15 @@ const logoutUser = async()=>{
   <TextInput onChangeText={(val)=>setLoginValues({...loginValues,['email']:val})}  style={styles.inputText}  ></TextInput>
 
   <Text  style={{position:'absolute',left:30,top:-3}} >Email</Text>
-  <TextInput onChangeText={(val)=>setLoginValues({...loginValues,['password']:val})}   style={styles.inputText}  ></TextInput>
+ <View style={{ position: 'relative' }} >
+ <TextInput secureTextEntry={showPasswords}   onChangeText={(val)=>setLoginValues({...loginValues,['password']:val})}    style={styles.inputText}  ></TextInput>
+ </View>
+ 
+    
+    <TouchableOpacity style={{position:'absolute',right:0,bottom:32,right:25}}  onPress={()=>setShowPassword(!showPasswords)} >
+    <Icon name={showPasswords ? 'eye-off-outline' : 'eye-outline'} size={20} />
+    </TouchableOpacity>
+
     <Text style={{position:'absolute',bottom:73,left:30}} >Password</Text>
   </View>
   
