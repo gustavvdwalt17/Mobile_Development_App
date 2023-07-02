@@ -17,11 +17,11 @@ import { useRoute } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 const Appointment = ({navigation}) => {
-  const healthid = useSelector((state) => state.loginSt.healthId)
+  const healthid = useSelector((state) => state.loginSt.currentHealthPracAppointment)
   const curruserid = useSelector((state) => state.loginSt.currentUserId)
    const currHealthName = useSelector((state) => state.loginSt.healthPracName)
   const currUserName = useSelector((state) => state.loginSt.userName)
-
+  console.log(healthid,'ididid')
   const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10); // Customize the characters and length as needed
 
 const [timesyeh,setTimesyeh]=useState(null)
@@ -150,7 +150,38 @@ for (const time of flattenedArray1) {
     result.push(time);
   }
 }
-setFinalRes(result)
+let arrayVal = []
+
+
+result.map((time)=>{
+ let disVal = time.split('-')[0]
+ let anodaSlit = disVal.split(':')[0]
+ arrayVal.push(parseInt(anodaSlit))
+})
+
+const sortedArrayVal = arrayVal.sort((a, b) => a - b)
+
+const finalArrayValue = []
+for (let i=0; i<sortedArrayVal.length; i++) {
+
+for (const s in  result){
+
+  if (result[s].split(":")[0].toString() === sortedArrayVal[i].toString()){
+    console.log('pushing',result[s])
+    finalArrayValue.push(result[s])
+  }
+}
+// console.log(finalArrayValue,'foneeee')
+}
+//LEAVE THIS sORTING MAYBE?????????????????
+
+
+
+setFinalRes( finalArrayValue)
+
+
+
+
 return result
 
 }
@@ -551,6 +582,7 @@ visible={modal}
 showsHorizontalScrollIndicator={false}
 horizontal={true}
 >  
+{console.log(finalres,'finale')}
 {finalres.length !== 0 ? (
   finalres.map((time, index) => (
     <React.Fragment key={shortid.generate()}>

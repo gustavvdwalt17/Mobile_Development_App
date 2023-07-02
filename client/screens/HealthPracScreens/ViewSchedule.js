@@ -11,7 +11,7 @@ const ViewSchedule = ({navigation}) => {
   const dispatch = useDispatch()  
   const [schedule,setSchedule] = useState(null)
     const [schedule2,setSchedule2] = useState(null)
-     console.log(healthid,'idididid')   
+    
  const healthid = useSelector((state) => state.loginSt.healthId ) //change  this  doesnt have to do with login
  console.log(healthid,'idididid')   
  let obj = {}

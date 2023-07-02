@@ -6,9 +6,9 @@ import { connection } from '../index.js';
 export const registerUser = async (req, res) => {
   try {
 
-    const { email, password ,name,surname } = req.body;
+    const { email, password ,name,surname , dob } = req.body;
     console.log( email, password ,name,surname)
-    const dob = '2023/06/18'
+
     // Check if the email already exists in the database
     const checkQuery = 'SELECT * FROM user WHERE email = ?';
     connection.query(checkQuery, [email], (error, results) => {

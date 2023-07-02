@@ -60,13 +60,14 @@ setThepracs(newValues)
     <View>
 
     <Text style={styles.title}>{item.Name}</Text>
-    <Text style={{width:100,marginLeft:10}} >Specialty: {item.Specialty}</Text>
+ 
 
 
     </View>
     
   
         </View>
+           <Text style={{marginLeft:10,marginTop:5}} >Specialty: {item.Specialty}</Text>
       <TouchableOpacity onPress={()=>navApp(item.HealthPracID,item.Name)}  style={{marginTop:50,backgroundColor:'#1F3B5B',padding:10,borderRadius:10}} >
         <Text style={{color:'white'}} >Book Appointment</Text>
       </TouchableOpacity>
@@ -110,48 +111,7 @@ style={{marginTop:35}} >
         maxToRenderPerBatch={2 * final}
       />
 
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
-      <Text>sdf</Text>
+
       </ScrollView>
 
      </ImageBackground>
@@ -175,7 +135,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color:'black',
-   marginTop: 15,
+   marginTop:20,
    marginLeft: 10,
 
   },

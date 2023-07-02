@@ -56,7 +56,7 @@ if (val){
 //   // setLoading(true)
 //  checOnboard()
 // },[])
-console.log(istrue)
+
   return (
 
     <NavigationContainer>
@@ -107,11 +107,19 @@ console.log(istrue)
       component={Scanner}
       
       /> */}
+
                                 <Stack.Screen 
       name="Join"
       component={JoinScreen}
       
       />
+
+                             <Stack.Screen 
+      name="RegisterSc3"
+      component={RegisterSc3}
+      
+      />
+
       
 
                                                            <Stack.Screen 
@@ -156,11 +164,7 @@ console.log(istrue)
       component={RegsterSc2}
       
       />
-                          <Stack.Screen 
-      name="RegisterSc3"
-      component={RegisterSc3}
-      
-      />
+   
                           <Stack.Screen 
       name="RegisterSc4"
       component={RegisterSc4}

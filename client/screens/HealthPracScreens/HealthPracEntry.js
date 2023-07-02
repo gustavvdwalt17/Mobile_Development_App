@@ -42,10 +42,10 @@ const HealthPracEntry = () => {
                 console.log('rando')
               iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
             }
-            else if (rn === 'schedule'){
-               iconName = focused ? 'calendar' : 'calendar-outline';
-            }
-                             else if (rn === user) {
+            // else if (rn === 'schedule'){
+            //    iconName = focused ? 'calendar' : 'calendar-outline';
+            // }
+            else if (rn === user) {
                 console.log('rando')
               iconName = focused ? 'person-circle' :'person-circle-outline';
             }
