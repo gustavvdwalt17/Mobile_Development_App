@@ -696,8 +696,8 @@ const sendVerificationEmail = (email, verificationCode) => {
       port: 587,
       secure: false,
       auth: {
-        user: 'goosyvdwalt@gmail.com',
-        pass: 'd3Gl77#@!1-',
+        user: '',
+        pass: '',
       },
     });
 
