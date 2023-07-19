@@ -27,7 +27,7 @@ app.use('/verify',loginRegisterRoutes)
 export const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'goosy156817:)',
+  password: 'password',
   database: 'mobile_dev'
 });
 
