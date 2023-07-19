@@ -1,2 +1,2 @@
-let IP_ADDRESS = '10.0.0.9:3001'
+let IP_ADDRESS = ''
 export default IP_ADDRESS
