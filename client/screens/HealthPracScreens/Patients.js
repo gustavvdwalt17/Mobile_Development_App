@@ -22,7 +22,7 @@ const Patients = () => {
   };
 
   const handleDownload = (filename) => {
-    const fileUrl = `http://10.0.0.5:3001/download/${filename}`;
+    const fileUrl = `http://${IP_ADDRESS}/download/${filename}`;
     Linking.openURL(fileUrl)
       .then(() => {
         console.log('File download initiated');
