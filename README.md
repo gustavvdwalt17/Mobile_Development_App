@@ -50,6 +50,7 @@ run npm install
 cd to server
 run npm install
 npm run dev start - start-server
-px expo start - run client
+npx expo start - run client
+add local ip to ipadres.js if run through expo
 
 
