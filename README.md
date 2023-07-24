@@ -19,30 +19,44 @@ Login -
 
 
 Register - 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/bea440f8-c25e-49a0-a7fe-0db375307ead)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/12094909-cf38-4745-a1f1-c67d988d9b8a)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/9061e908-e41f-4af8-aed6-4d9f8271ef18)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/4cd5dd67-40b9-45a8-b3a3-16d80f4b18d8)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/4c412791-8b2e-4bbc-a18d-eb1fa23da833)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/fd073d9b-cba1-4304-aa81-e455df32d6d6)
+
 
 User Dashboard - 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/38f00329-5b8b-4761-ab15-8e80f732134b)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/5d69cf2e-7b6b-41ab-a59d-089b8de04dd9)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/a0eff914-7f98-40e5-925a-515dd8e8345a)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/58939245-cc0d-4ae5-8d3f-2bedef530746)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/c7f838d6-37fc-4b93-8fe9-1587070ceec0)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/d602e60f-ec41-4cc8-91aa-7f0b4cb0f91f)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/ae895fcc-ce8d-4c82-9168-7a525d67d27b)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/b820081f-27d6-48ed-8fb8-a0cb9248f6e6)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/115db104-2186-4c2b-9d63-fef74a46fe82)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/a2969046-ac13-459c-9074-74c1a727f053)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/d4668fd1-7e7b-42d3-a19e-d4aa22519378)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/755f4c17-3e97-4594-848e-594ab2697dd8)
+
 
 Logout - 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/454280bb-b463-46d0-8f75-596bf2e55bc0)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/e9be37f5-f632-4fc9-85e1-4c4336b2ce22)
+
 
 
 HealthPrac Dashboard - 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/66d1b66a-8a7e-4f90-bc6c-366c53d46b6f)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/1c01ee81-6c38-43f8-a81b-d422729d5d76)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/26b796e6-00bd-4832-baab-b202f253a7de)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/b047b164-591f-49b2-b2f6-bb31125d4283)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/8a83b303-b4e2-48ac-b5e2-abf2ca552cf5)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/83e8d203-5e0f-4ce2-84bb-ef6e71770179)
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/ad38b0eb-9ea1-4d1f-956f-7f607d6c86cd)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/cc944b45-9653-4305-868c-be2150f2fddb)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/a6b05283-93bf-49a8-b848-eab9eb855853)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/5511669c-dadd-445d-b72f-24597a57d2c9)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/664924ed-784a-4df5-bdab-78b0cd70e3aa)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/616c6f38-76d7-4010-95a3-55249adfef7b)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/3f9090c8-6e2a-49e7-af3b-0db7db217c09)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/370b0a8d-cfcd-4a62-9222-6a826bf6c7f6)
+
 
 
 Instructions:
