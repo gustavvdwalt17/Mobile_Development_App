@@ -6,13 +6,16 @@ Developed a mobile application for a client, which is a health practitioner, tha
 
 Login/Register Page
 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/d145ec46-0064-41d6-b8fd-f3d40b26bc3a)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/6b8f0a3d-91a5-401f-bc72-80f16a5f2318)
+
 
 Login - 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/368dc797-9200-42da-8415-169115fd311c)
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/92f4a708-33a7-457c-af78-906d9fdc0fc6)
 
 
-![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/99182ec6-e75b-4103-807b-650558a45b1f)
+
+![image](https://github.com/gustavvdwalt17/Mobile_Development_App/assets/99323516/c416c3d9-2824-41ac-aeac-8e1f127fa1af)
+
 
 
 Register - 
